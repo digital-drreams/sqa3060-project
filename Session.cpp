@@ -65,10 +65,23 @@ bool Session::deposit(){
 		cout << "Enter Account Identification number: ";
 		cin >> accountNumber;
 		if (!handler.verify(accountNumber, accountHolderName)){
+			cout << "Enter amount to be deposited: ";
+			cin >> depositValue;
+		}
+		else {
 			cout << "Invalid Account Identification number." << endl;
 		}
 
-	}
+	} else {
+        cout << "Enter Account Identification number: ";
+        cin >> accountNumber;
+        if (!Database.verify(accountNumber, username)){
+            cout << "Enter amount to be deposited: ";
+            cin >> depositValue;
+        } else {
+            cout << "Invalid Account Identification number." << endl;
+        }
+    }
 }
 
 bool Session::changeplan(){
