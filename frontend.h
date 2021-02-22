@@ -2,6 +2,8 @@
 #define __frontend_h__
 
 #include <iostream>
+#include <bits/stdc++.h>
+#include <string>
 
 using namespace std;
 
@@ -66,7 +68,7 @@ private:
 	bool isActive;
 	Database* handler;
 	string username;
-	string* transactionLog;
+	vector<string> transactionLog; // changed to a vector
 
 public:
 	bool login();
