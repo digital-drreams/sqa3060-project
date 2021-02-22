@@ -58,16 +58,15 @@ class Session {
                 string accountHolderName;
                 int accountNumber;
                 float depositValue;
-                while (true){
-                    cout << "Enter Account holder Name: ";
-                    cin >> accountHolderName >> endl;
-                    cout << "Enter Account Identification number: ";
-                    cin >> accountNumber >> endl;
-                    if (!Database.verify(accountNumber, accountHolderName)){
-                        cout << "Invalid Account Identification number." << endl;
-                    } else {
-                        break;
-                    }
+                
+                cout << "Enter Account holder Name: ";
+                cin >> accountHolderName >> endl;
+                cout << "Enter Account Identification number: ";
+                cin >> accountNumber >> endl;
+                if (!Database.verify(accountNumber, accountHolderName)){
+                    cout << "Invalid Account Identification number." << endl;
+                } else {
+
                 }
 
             }
