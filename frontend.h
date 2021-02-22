@@ -33,7 +33,7 @@ public:
 	int create(string accountHolder, float initBalance);
 	void discard();
 	void disable();
-	void changeplan();
+	bool changeplan(int id, string name);
 	bool verify(int accountNumber, string accountName);
 
 	// bool changeBalance(int id, string name);

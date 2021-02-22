@@ -56,8 +56,11 @@ void Database::disable() {
 
 }
 
-void Database::changeplan() {
+bool Database::changeplan(int id, string name) {
+	// Returns true if it has been changed into a student account
+	// Returns false if it has been changed out of a student account
 
+	return true;
 }
 
 bool Database::verify(int accountNumber, string accountName) {
