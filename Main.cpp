@@ -64,7 +64,7 @@ int main() {
 		else{
 			cout << "Invalid input" << endl;
 		}
-		
+		in = "";
 	
 	}
 
