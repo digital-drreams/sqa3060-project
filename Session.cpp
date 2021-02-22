@@ -55,11 +55,11 @@ bool Session::transfer(){
 }
 
 bool Session::deposit(){
-	if (isPrivileged){
-		string accountHolderName;
-		int accountNumber;
-		float depositValue;
-				
+	string accountHolderName;
+	int accountNumber;
+	float depositValue;
+
+	if (isPrivileged){	
 		cout << "Enter Account holder Name: ";
 		cin >> accountHolderName;
 		cout << "Enter Account Identification number: ";
@@ -75,7 +75,7 @@ bool Session::deposit(){
 	} else {
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (!Database.verify(accountNumber, username)){
+        if (!handler.verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
         } else {
