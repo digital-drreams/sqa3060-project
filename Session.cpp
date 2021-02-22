@@ -55,26 +55,30 @@ bool Session::transfer(){
 }
 
 bool Session::deposit(){
+
     string accountHolderName;
     int accountNumber;
     float depositValue;
+
     if (isPrivileged){ // if user is ADMIN, ask for name and account number
         cout << "Enter Account holder Name: ";
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (!handler.verify(accountNumber, accountHolderName)){
+        if (!handler->verify(accountNumber, accountHolderName)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
+			handler->changeBalance(accountNumber, accountHolderName, depositValue);
         } else {
             cout << "Invalid Account Identification number." << endl;
         }
     } else { // if user is standard, ask for account number
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (!handler.verify(accountNumber, username)){
+        if (!handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
+			handler->changeBalance(accountNumber, username, depositValue);
         } else {
             cout << "Invalid Account Identification number." << endl;
         }
@@ -82,7 +86,21 @@ bool Session::deposit(){
 }
 
 bool Session::changeplan(){
+	// true if student and false other3ise
+	string accountHolderName;
+	int accountNumber;
 
+	if (isPrivileged){
+		cout << "Enter User Identification: ";
+		cin >> accountHolderName;
+		cout << "Enter account number: ";
+		cin >> accountNumber;
+		if (handler->changeplan(accountNumber, accountHolderName)){
+
+		}
+
+
+	}
 }
 
 bool Session::discard(){
