@@ -55,24 +55,21 @@ bool Session::transfer(){
 }
 
 bool Session::deposit(){
-	string accountHolderName;
-	int accountNumber;
-	float depositValue;
-
-	if (isPrivileged){	
-		cout << "Enter Account holder Name: ";
-		cin >> accountHolderName;
-		cout << "Enter Account Identification number: ";
-		cin >> accountNumber;
-		if (!handler.verify(accountNumber, accountHolderName)){
-			cout << "Enter amount to be deposited: ";
-			cin >> depositValue;
-		}
-		else {
-			cout << "Invalid Account Identification number." << endl;
-		}
-
-	} else {
+    string accountHolderName;
+    int accountNumber;
+    float depositValue;
+    if (isPrivileged){ // if user is ADMIN, ask for name and account number
+        cout << "Enter Account holder Name: ";
+        cin >> accountHolderName;
+        cout << "Enter Account Identification number: ";
+        cin >> accountNumber;
+        if (!handler.verify(accountNumber, accountHolderName)){
+            cout << "Enter amount to be deposited: ";
+            cin >> depositValue;
+        } else {
+            cout << "Invalid Account Identification number." << endl;
+        }
+    } else { // if user is standard, ask for account number
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
         if (!handler.verify(accountNumber, username)){
