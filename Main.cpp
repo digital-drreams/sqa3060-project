@@ -7,48 +7,53 @@ using namespace std;
 int main() {
 	Session mySes;
 
-	char* in;
+	string in;
 
 	while (true){
 		cin >> in;
-		if(strcmp(in, "login") == 0){
+		if(in == "login"){
+			cout << "Pass" << endl
+		}
+
+		if(in == "login"){
 			mySes.login();
 		}
 		
-		else if(strcmp(in,"logout") == 0){
+		else if(in == "logout"){
 			mySes.logout();
 		}
 	
-		else if(strcmp(in,"withdrawal") == 0){
+		else if(in == "withdrawal"){
 			mySes.withdrawal();
 		}
 
-		else if(strcmp(in,"transfer") == 0){
+		else if(in == "transfer"){
 			mySes.transfer();
 		}
 		
-		else if(strcmp(in,"deposit") == 0){
+		else if(in == "deposit"){
 			mySes.deposit();
 		}
 
-		else if(strcmp(in,"changeplan") == 0){
+		else if(in == "changeplan"){
 			mySes.changeplan();
 		}
 
-		else if(strcmp(in,"delete") == 0){
+		else if(in == "delete"){
 			mySes.discard();
 		}
 
-		else if(strcmp(in,"disable") == 0){
+		else if(in == "disable"){
 			mySes.disable();
 		}
 
-		else if(strcmp(in,"create") == 0){
+		else if(in == "create"){
 			mySes.create();
 		}
 		else{
 			cout << "Invalid input" << endl;
 		}
+		
 	
 	}
 
