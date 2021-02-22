@@ -33,7 +33,7 @@ class Session {
 
         }
 
-        void delete(){
+        void discard(){
 
         }
 
