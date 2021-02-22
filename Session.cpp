@@ -5,10 +5,10 @@
 using namespace std;
 
 int Session::transactionLogSize;
-std::string* Account::transactionLog = new std::string[transactionLogSize];
+std::string* Session::transactionLog = new std::string[transactionLogSize];
 
 
-void Session::login(){
+bool Session::login(){
     if (!isActive){
         string sessionType;
         string adminType = "admin";
@@ -32,7 +32,7 @@ void Session::login(){
     }
 }
 
-void Session::logout(){
+bool Session::logout(){
     if (isActive){
         isActive = false;
         cout << "Session terminated." << endl;
@@ -44,15 +44,15 @@ void Session::logout(){
     }
 }
 
-void Session::withdrawal(){
+bool Session::withdrawal(){
 
 }
 
-void Session::transfer(){
+bool Session::transfer(){
 
 }
 
-void Session::deposit(){
+bool Session::deposit(){
     if (isPrivileged){
         string accountHolderName;
         int accountNumber;
@@ -69,19 +69,19 @@ void Session::deposit(){
     }
 }
 
-void Session::changeplan(){
+bool Session::changeplan(){
 
 }
 
-void Session::discard(){
+bool Session::discard(){
 
 }
 
-void Session::disable(){
+bool Session::disable(){
 
 }
 
-void Session::create(){
+bool Session::create(){
     if (isActive) { //Is there a user logged in?
         if (isPrivileged) { //Are they an admin?
             string acc;
