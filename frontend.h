@@ -54,3 +54,5 @@ protected:
 public:
 	Account(int id, string name, float initBalance);
 };
+
+#endif
