@@ -237,11 +237,67 @@ bool Session::changeplan(){
 }
 
 bool Session::discard(){
-	return true;
+	if (isActive) { //Is there a user logged in?
+		if (isPrivileged) { //Are they an admin?
+			string name;
+			cout << "Enter account holder name: ";
+			cin >> name;
 
+			if (name.length() > 20) { //Is the name format valid?
+				cout << "Error: Account holder name must be 20 characters or less." << endl;
+			}
+			else {
+				int id;
+				cout << "Enter account identifiction number: ";
+				cin >> id;
+
+				if (handler->verify(id, name)) { //Does such an account exist?
+					if (handler->discard(id, name)) { //Was the discard successful?
+						cout << "Account deleted successfully." << endl;
+						return true;
+					}
+					else {
+						cout << "Account has a nonzero balance and cannot be deleted." << endl 
+							 << "Please make a withdrawal or pay any outstanding fees first." << endl;
+					}
+				}
+				else {
+					cout << "Invalid account identification number." << endl;
+				}
+			}
+		}
+		else {
+			cout << "Permission denied." << endl;
+		}
+	}
+	else {
+		cout << "Error: Transaction not accepted outside of active session." << endl;
+	}
+	return false;
 }
 
 bool Session::disable(){
+    string accountHolderName;
+	int accountNumber;
+
+    if(isPrivileged){
+        cout << "Enter User Identification: ";
+        cin >> accountHolderName;
+        cout << "Enter account number: ";
+        cin >> accountNumber;
+        if(!handler->verify(accountNumber,accountHolderName)){
+            //Disable account
+            handler->disable(accountNumber, accountHolderName);
+
+            cout << "Account " << accountNumber << " disabled successfully" << endl;
+        }
+        else{
+            cout << "Error: Account " << accountNumber << " does not exist" << endl;
+        }
+
+    }else{
+        cout << "Permission Denied: Must be an admin to disable an account" << endl;
+    }
 	return true;
 }
 
@@ -254,7 +310,6 @@ bool Session::create(){
 
 			if (acc.length() > 20) { //Is the name format valid?
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
-				return false;
 			}
 			else {
 				float balance;
@@ -265,7 +320,6 @@ bool Session::create(){
 				
 				if (balance >= 100000.00) { //Is the balance input too large?
 					cout << "Error: Initial balance must be less than $100000.00." << endl;
-					return false;
 				}
 				else {
 					printf("Account created successfully; account #%05i", handler->create(acc, balance));
@@ -281,5 +335,5 @@ bool Session::create(){
 	else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
 	}
-	return true; //Placeholder, arrange return properly when complete (consider changing returntype to void)
+	return false;
 }
