@@ -4,30 +4,50 @@
 using namespace std;
 
 Database::Database(void) {
+	// Initializes the head and tail account values
 	head = NULL;
 	tail = NULL;
-	cout << "Database is being created" << endl;
 }
 
 Database::~Database(void) {
-	cout << "Database is being deleted" << endl;
+	// Variable Declaration
+	accountNode* current = head;
+	accountNode* prev = NULL;
+	accountNode* temp;
+
+	// Deletes all accounts from the database
+	if (head != 0) {
+		while (current != 0) {
+			temp = current;
+			head = current->next;
+			delete temp;
+			current = head;
+		}
+	}
 }
 
-void Database::setFileLocation(string location) {
-	fileLocation = location;
+bool Database::changeBalance(int id, string name, float amount) {
+	// Obtains specified account from database
+	accountNode* foundAccount = findAccount(id, name);
+	if (verify(id, name) == true) {
+		// Obtains current balance of the account
+		float currentBalance = foundAccount->account->balance;
+		cout << currentBalance << endl;
+		// Returns false if the current transaction will cause the account balance
+		// to have a negative balance
+		if (currentBalance + amount < 0) {
+			return false;
+		}
+		// Otherwise, perform transaction on account
+		else {
+			foundAccount->account->balance = currentBalance + amount;
+		}
+	}
+
+	return false;
 }
 
-string Database::getFileLocation(void) {
-	return fileLocation;
-}
-
-bool Database::changeBalance(int accountNumber, string accountHolder, float amount) {
-	cout << "Changing Balance" << endl;
-
-	return true;
-}
-
-int Database::create(string accountHolder, float initBalance) {
+int Database::create(string name, float initBalance) {
 	// Creates a new instance of the account class using the
 	// provided account holder name and initial balance
 
@@ -35,7 +55,7 @@ int Database::create(string accountHolder, float initBalance) {
 		// Obtains account number of next account to be made
 		int newID = tail->account->number + 1;
 		// Creates a new instance of the account class
-		Account* account = new Account(newID, accountHolder, initBalance);
+		Account* account = new Account(newID, name, initBalance);
 
 		// Reassigns linked list node values to accomodate for the newly added account
 		accountNode* tmp = new accountNode;
@@ -49,7 +69,7 @@ int Database::create(string accountHolder, float initBalance) {
 	}
 	else {
 		// Creates a new instance of the account class
-		Account *account = new Account(1, accountHolder, initBalance);
+		Account *account = new Account(1, name, initBalance);
 		// Reassigns linked list node values to accomodate for the newly added account
 		accountNode* tmp = new accountNode;
 		tmp->account = account;
@@ -63,73 +83,95 @@ int Database::create(string accountHolder, float initBalance) {
 	}
 }
 
-void Database::discard(int id, string name) {
-	// // Variable Declaration
-	// accountNode* current = head;
-	// accountNode* prev = NULL;
-	// accountNode* temp;
+bool Database::discard(int id, string name) {
+	// Variable Declaration
+	accountNode* current = head;
+	accountNode* prev = NULL;
+	accountNode* temp;
 
-	// // When the database contains accounts
-	// if (head != 0) {
-	// 	while (current != 0) {
-	// 		int currentID = current->account->number;
-	// 		cout << currentID << endl;
-
+	// When accounts exist in the database, iterate through all the accounts to find a matching
+	// account that is associated to the account name provided
+	if (head != 0) {
+		while (current != 0) {
+			// Obtains account number of the current account
+			int currentID = current->account->number;
 			
-	// 		if (currentID == id) {
-	// 			// TODO: use verify function to check if account holders name matches current account
-
-	// 			temp = current;
-	// 			prev->next = current->next;
-	// 			cout << &temp << endl;
-	// 			cout << &current << endl;
-	// 			cout << &prev << endl;
-
-	// 			cout << "DELETED" << endl;
-	// 		}
-	// 		else {
-	// 			prev = current;
-	// 		}
-
-	// 		current = current->next;
-	// 		delete temp;
-	// 		cout << &temp << endl;
-	// 		cout << &current << endl;
-	// 	}
-	// }
-	// else {
-	// 	cout << "No accounts available" << endl;
-	// }
+			// Deletes the current account if and only if the current account number matches 
+			// the provided account number, belongs to the provided account holder
+			// and contains a zero balance
+			if (currentID == id && current->account->balance == 0 && verify(id, name) == true) {
+				if (prev != NULL) {
+					temp = current;
+					prev->next = current->next;
+					current = prev->next;
+					delete temp;
+				}
+				else {
+					temp = current;
+					head = current->next;
+					delete temp;
+					current = head;
+				}
+				// Returns true to indicate that the account was successfully deleted
+				return true;
+			}
+			// Iterates to the next node in the database linked list
+			else {
+				prev = current;
+				current = current->next;
+			}
+		}
+		// Returns false indicating that an account was not deleted
+		return false;
+	}
+	// Returns false when no accounts exist in the database
+	else {
+		return false;
+	}
 }
 
 void Database::disable(int id, string name) {
 	// Obtains specified account from database
 	accountNode* foundAccount = findAccount(id, name);
-
-	// Sets account to a disabled state
-	foundAccount->account->isDisabled = true;
+	if (verify(id, name) == true) {
+		// Sets account to a disabled state
+		foundAccount->account->isDisabled = true;
+	}
 }
 
 bool Database::changeplan(int id, string name) {
 	// Obtains specified account from database
 	accountNode* foundAccount = findAccount(id, name);
+	if (verify(id, name) == true) {
+		// Toggles the status of the account between student and non-student
+		foundAccount->account->isStudent = !foundAccount->account->isStudent;
 
-	// Toggles the status of the account between student and non-student
-	foundAccount->account->isStudent = !foundAccount->account->isStudent;
-
-	// Returns current state of account
+		// Returns current state of account
+		return foundAccount->account->isStudent;
+	}
 	return foundAccount->account->isStudent;
 }
 
-bool Database::verify(int accountNumber, string accountName) {
-	return true;
+bool Database::verify(int id, string name) {
+	// Obtains specified account from database
+	accountNode* foundAccount = findAccount(id, name);
+
+	// Checks if account holder name of the found account matches the
+	// provided name
+	if (foundAccount != NULL && strcmp(const_cast<char*>(name.c_str()), const_cast<char*>(foundAccount->account->holder.c_str())) == 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 accountNode* Database::findAccount(int id, string name) {
 	// Variable Declaration
 	accountNode* current = head;
 
-	// When the database contains accounts
+	// When the database contains accounts, iterate through each node in the accounts linked list
+	// until an account that matches the provided account ID is found
 	if (head != 0) {
 		while (current != 0) {
 			int currentID = current->account->number;
@@ -141,9 +183,7 @@ accountNode* Database::findAccount(int id, string name) {
 			current = current->next;
 		}
 	}
-	else {
-		cout << "No accounts available" << endl;
-	}
 
+	// Returns NULL if an account is not found
 	return NULL;
 }
