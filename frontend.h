@@ -19,7 +19,7 @@ public:
 	bool transfer();
 	bool deposit();
 	bool changeplan();
-	bool delete();
+	bool discard();
 	bool disable();
 	bool create();
 };
@@ -34,7 +34,7 @@ public:
 	~Database();
 	bool changeBalance(int id, string name);
 	int create(string name, float initBalance);
-	void delete(int id, string name);
+	void discard(int id, string name);
 	void disable(int id, string name);
 	void changeplan(int id, string name);
 	bool verify(int id, string name);
@@ -52,5 +52,5 @@ protected:
 	bool isStudent;
 
 public:
-	Account();
+	Account(int id, string name, float initBalance);
 };
