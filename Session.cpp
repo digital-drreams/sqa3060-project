@@ -32,7 +32,7 @@ bool Session::login(){
 			return false;
 		}
 	} else {
-		cout << "Already logged in to a session" << endl;
+		cout << "Already logged in to a session." << endl;
 		return false;
 	}
 }
@@ -58,7 +58,7 @@ bool Session::withdrawal(){
 	string floatType = "float";
 
     if (isPrivileged){ // if user is ADMIN, ask for name and account number
-        cout << "Enter Account holder Name: ";
+        cout << "Enter User Identification ";
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
@@ -108,11 +108,72 @@ bool Session::withdrawal(){
 }
 
 bool Session::transfer(){
-	return true;
+	string accountHolderName;
+    int sndrAccountNumber;
+	int recpAccountNumber;
+    float transferValue;
+	string floatType = "float";
+	float transferLimit = 1000.00; // session limit for standard login
+	string logLine;
+	string protocol = "04 ";
+	string tab = "\t\t ";
+
+
+	if (isPrivileged){ // FOR ADMIN SESSION
+		cout << "Enter User Identification: ";
+        cin >> accountHolderName;
+        cout << "Enter host account number: ";
+        cin >> sndrAccountNumber;
+		cout << "Enter recipient account number: ";
+		cin >> recpAccountNumber;
+		if ((handler->verify(sndrAccountNumber, accountHolderName)) && (handler->verify(recpAccountNumber, accountHolderName))){
+			cout << "Enter amount to transfer: ";
+			cin >> transferValue;
+			if (handler->changeBalance(sndrAccountNumber, accountHolderName, -transferValue)){ // check for sender balance
+				handler->changeBalance(recpAccountNumber, accountHolderName, transferValue);
+				logLine  = protocol + accountHolderName + tab + to_string(recpAccountNumber) + " " + to_string(transferValue);
+				transactionLog.push_back(logLine);
+				return true;
+			} else {
+				cout << "Insufficient funds! Try again." << endl;
+				return false;
+			}
+		} else {
+			cout << "Account is invalid! Try again." << endl;
+			return false;
+		}
+
+	} else {
+
+		cout << "Enter host account number: ";
+        cin >> sndrAccountNumber;
+		cout << "Enter recipient account number: ";
+		cin >> recpAccountNumber;
+		if ((handler->verify(sndrAccountNumber, accountHolderName)) && (handler->verify(recpAccountNumber, accountHolderName))){
+			cout << "Enter amount to transfer: ";
+			cin >> transferValue;
+			if (transferValue <= transferLimit){
+				if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance
+					handler->changeBalance(recpAccountNumber, username, transferValue);
+					logLine  = protocol + username + tab + to_string(recpAccountNumber) + " " + to_string(transferValue);
+					transactionLog.push_back(logLine);
+					return true;
+				} else {
+					cout << "Insufficient funds! Try again." << endl;
+					return false;
+				}
+			} else {
+				cout << "Transfer failed! The amount exceeds the session limit at $1000.00." << endl;
+				return false;
+			}
+		} else {
+			cout << "Account is invalid! Try again." << endl;
+			return false;
+		}
+	}
 }
 
 bool Session::deposit(){
-
     string accountHolderName;
     int accountNumber;
     float depositValue;
@@ -152,7 +213,7 @@ bool Session::changeplan(){
 	string accountHolderName;
 	int accountNumber;
 	string logLine;
-	string protocol = "08";
+	string protocol = "08 ";
 	string tab = "\t\t ";
 	string stdAccountPlan = "SP";
 	string nonStdAccountPlan = "NP";
@@ -163,10 +224,10 @@ bool Session::changeplan(){
 		cout << "Enter account number: ";
 		cin >> accountNumber;
 		if (handler->changeplan(accountNumber, accountHolderName)){
-			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + "00000.00" + stdAccountPlan;
+			logLine = protocol + accountHolderName + tab + to_string(accountNumber) + " 00000.00 " + stdAccountPlan;
 			transactionLog.push_back(logLine);
 		} else {
-			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + "00000.00" + nonStdAccountPlan;
+			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + " 00000.00 " + nonStdAccountPlan;
 			transactionLog.push_back(logLine); 
 		}
 		return true;
