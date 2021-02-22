@@ -36,7 +36,7 @@ bool Session::logout(){
     if (isActive){
         isActive = false;
         cout << "Session terminated." << endl;
-        for (int i = 0; i < transactionLogSize; i++){
+        for (int i = 0; i < transactionLog; i++){
             cout << transactionLog[i];
         }
     } else {
