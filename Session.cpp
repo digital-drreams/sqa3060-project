@@ -67,7 +67,7 @@ bool Session::deposit(){
         if (!handler->verify(accountNumber, accountHolderName)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
-			handler.changeBalance(accountNumber, accountHolderName, depositValue);
+			handler->changeBalance(accountNumber, accountHolderName, depositValue);
         } else {
             cout << "Invalid Account Identification number." << endl;
         }
@@ -77,7 +77,7 @@ bool Session::deposit(){
         if (!handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
-			handler.changeBalance(accountNumber, username, depositValue);
+			handler->changeBalance(accountNumber, username, depositValue);
         } else {
             cout << "Invalid Account Identification number." << endl;
         }

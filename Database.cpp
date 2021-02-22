@@ -92,7 +92,7 @@ bool Database::verify(int accountNumber, string accountName) {
 	return true;
 }
 
-int main() {
+/*int main() {
 	Database obj;
 
 	obj.changeBalance("Test Account 1", 100000000, 10.0);
@@ -100,4 +100,4 @@ int main() {
 
 
 	return 0;
-}
+}*/
