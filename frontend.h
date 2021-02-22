@@ -44,7 +44,7 @@ class Session
 private:
 	bool isPrivileged;
 	bool isActive;
-	Database handler;
+	Database* handler;
 	string username;
 	string* transactionLog;
 

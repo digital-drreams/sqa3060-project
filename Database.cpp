@@ -33,7 +33,7 @@ class Database {
 		bool verify(int accountNumber, string accountName);
 };
 
-Database::Database(void) {
+Database::Database() {
 	//head = NULL;
 	//tail = NULL;
 	cout << "Database is being created" << endl;

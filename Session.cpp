@@ -55,6 +55,7 @@ bool Session::transfer(){
 }
 
 bool Session::deposit(){
+
     string accountHolderName;
     int accountNumber;
     float depositValue;
@@ -64,7 +65,7 @@ bool Session::deposit(){
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (!handler.verify(accountNumber, accountHolderName)){
+        if (!handler->verify(accountNumber, accountHolderName)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler.changeBalance(accountNumber, accountHolderName, depositValue);
@@ -74,7 +75,7 @@ bool Session::deposit(){
     } else { // if user is standard, ask for account number
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (!handler.verify(accountNumber, username)){
+        if (!handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler.changeBalance(accountNumber, username, depositValue);
