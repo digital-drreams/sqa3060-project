@@ -15,36 +15,39 @@ int main() {
 			mySes.login();
 		}
 		
-		if(strcmp(in,"logout") == 0){
+		else if(strcmp(in,"logout") == 0){
 			mySes.logout();
 		}
 	
-		if(strcmp(in,"withdrawal") == 0){
+		else if(strcmp(in,"withdrawal") == 0){
 			mySes.withdrawal();
 		}
 
-		if(strcmp(in,"transfer") == 0){
+		else if(strcmp(in,"transfer") == 0){
 			mySes.transfer();
 		}
 		
-		if(strcmp(in,"deposit") == 0){
+		else if(strcmp(in,"deposit") == 0){
 			mySes.deposit();
 		}
 
-		if(strcmp(in,"changeplan") == 0){
+		else if(strcmp(in,"changeplan") == 0){
 			mySes.changeplan();
 		}
 
-		if(strcmp(in,"delete") == 0){
+		else if(strcmp(in,"delete") == 0){
 			mySes.discard();
 		}
 
-		if(strcmp(in,"disable") == 0){
+		else if(strcmp(in,"disable") == 0){
 			mySes.disable();
 		}
 
-		if(strcmp(in,"create") == 0){
+		else if(strcmp(in,"create") == 0){
 			mySes.create();
+		}
+		else{
+			cout << "Invalid input" << endl;
 		}
 	
 	}
