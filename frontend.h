@@ -68,7 +68,8 @@ private:
 	bool isActive;
 	Database* handler;
 	string username;
-	vector<string> transactionLog; // changed to a vector
+	vector<string> transactionLog;
+	float sessionLimit;
 
 public:
 	bool login();
