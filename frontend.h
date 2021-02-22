@@ -37,6 +37,7 @@ public:
 	void disable(int id, string name);
 	bool changeplan(int id, string name);
 	bool verify(int accountNumber, string accountName);
+	accountNode* findAccount(int id, string name);
 
 	// bool changeBalance(int id, string name);
 	// int create(string name, float initBalance);
@@ -68,7 +69,8 @@ private:
 	bool isActive;
 	Database* handler;
 	string username;
-	vector<string> transactionLog; // changed to a vector
+	vector<string> transactionLog;
+	float sessionLimit;
 
 public:
 	bool login();

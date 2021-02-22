@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <typeinfo>
 #include "frontend.h"
 
 using namespace std;
@@ -17,14 +18,14 @@ bool Session::login(){
 			isPrivileged = true;
 			isActive = true;
 			handler = new Database();
- 			// changed to a vector
+			sessionLimit = 10000000.00;
 			return true;
 		} else if (sessionType == standardType){
 			cout << "Session request successful." << endl;
 			isPrivileged = false;
 			isActive = true;
 			handler = new Database();
- 			// changed to a vector
+			sessionLimit = 500.00;
 			return true;
 		} else {
 			cout << "Invalid session type." << endl;
@@ -51,7 +52,59 @@ bool Session::logout(){
 }
 
 bool Session::withdrawal(){
-	return true;
+	string accountHolderName;
+    int accountNumber;
+    float withdrawValue;
+	string floatType = "float";
+
+    if (isPrivileged){ // if user is ADMIN, ask for name and account number
+        cout << "Enter Account holder Name: ";
+        cin >> accountHolderName;
+        cout << "Enter Account Identification number: ";
+        cin >> accountNumber;
+        if (handler->verify(accountNumber, accountHolderName)){
+            cout << "Enter amount to be withdrawn: ";
+            cin >> withdrawValue;
+			if (typeid(withdrawValue).name() != floatType){
+				cout << "Amount entered must be set to base10." << endl;
+				return false;
+			} else {
+				if (handler->changeBalance(accountNumber, username, -withdrawValue)){
+					return true;
+				} else {
+					return false;
+				}
+			}
+		} else {
+			cout << "Invalid Account Identification number." << endl;
+			return false;
+		}
+    } else { // if user is standard, ask for account number
+        cout << "Enter Account Identification number: ";
+        cin >> accountNumber;
+        if (handler->verify(accountNumber, username)){
+            cout << "Enter amount to be withdrawn: ";
+            cin >> withdrawValue;
+			if (typeid(withdrawValue).name() != floatType){
+				cout << "Amount entered must be set to base10." << endl;
+				return false;
+			} else {
+				if (withdrawValue <= sessionLimit){
+					if (handler->changeBalance(accountNumber, username, -withdrawValue)){
+						return true;
+					} else {
+						return false;
+					}
+				} else {
+					cout << "Amount entered exceeds the limit." << endl;
+					return false;
+				}
+			}
+        } else {
+            cout << "Invalid Account Identification number." << endl;
+			return false;
+        }
+    }
 }
 
 bool Session::transfer(){
@@ -69,25 +122,29 @@ bool Session::deposit(){
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (!handler->verify(accountNumber, accountHolderName)){
+        if (handler->verify(accountNumber, accountHolderName)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler->changeBalance(accountNumber, accountHolderName, depositValue);
+			return true;
 		} else {
             cout << "Invalid Account Identification number." << endl;
+			return false;
 		}
     } else { // if user is standard, ask for account number
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (!handler->verify(accountNumber, username)){
+        if (handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler->changeBalance(accountNumber, username, depositValue);
+			return true;
         } else {
             cout << "Invalid Account Identification number." << endl;
+			return false;
         }
     }
-	return true; //Placeholder, arrange return properly when complete (consider changing returntype to void)
+	return true; 
 }
 
 bool Session::changeplan(){
@@ -106,14 +163,16 @@ bool Session::changeplan(){
 		cout << "Enter account number: ";
 		cin >> accountNumber;
 		if (handler->changeplan(accountNumber, accountHolderName)){
-			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + "0000.00" + stdAccountPlan;
-			transactionLog.push_back(logLine); // changed to vector
+			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + "00000.00" + stdAccountPlan;
+			transactionLog.push_back(logLine);
 		} else {
-			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + "0000.00" + nonStdAccountPlan;
-			transactionLog.push_back(logLine); // changed to a vector
+			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + "00000.00" + nonStdAccountPlan;
+			transactionLog.push_back(logLine); 
 		}
+		return true;
+	} else {
+		return false;
 	}
-	return true; //Placeholder, arrange return properly when complete (consider changing returntype to void)
 }
 
 bool Session::discard(){
