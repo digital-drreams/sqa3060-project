@@ -115,11 +115,3 @@ class Session {
             }
         }
 };
-
-int main() {
-  Session x;
-
-  x.login();
-  x.logout();
-  return 0;
-}

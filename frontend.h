@@ -10,6 +10,7 @@ class Session
 private:
 	bool isPrivileged;
 	bool isActive;
+	string username;
 	string* transactionLog;
 
 public:
