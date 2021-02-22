@@ -122,6 +122,27 @@ bool Session::discard(){
 }
 
 bool Session::disable(){
+    string accountHolderName;
+	int accountNumber;
+
+    if(isPrivileged){
+        cout << "Enter User Identification: ";
+        cin >> accountHolderName;
+        cout << "Enter account number: ";
+        cin >> accountNumber;
+        if(!handler->verify(accountNumber,accountHolderName)){
+            //Disable account
+            handler->disable(accountNumber, accountHolderName);
+
+            cout << "Account " << accountNumber << " disabled successfully" << endl;
+        }
+        else{
+            cout << "Error: Account " << accountNumber << " does not exist" << endl;
+        }
+
+    }else{
+        cout << "Permission Denied: Must be an admin to disable an account" << endl;
+    }
 	return true;
 }
 
