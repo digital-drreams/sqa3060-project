@@ -4,8 +4,7 @@
 
 using namespace std;
 
-int Session::transactionLogSize;
-std::string* Session::transactionLog = new std::string[transactionLogSize];
+std::string* Session::transactionLog = new std::string[0];
 
 
 bool Session::login(){
@@ -36,7 +35,7 @@ bool Session::logout(){
     if (isActive){
         isActive = false;
         cout << "Session terminated." << endl;
-        for (int i = 0; i < transactionLogSize; i++){
+        for (int i = 0; i < sizeof(transactionLog); i++){
             cout << transactionLog[i];
         }
     } else {
@@ -59,9 +58,9 @@ bool Session::deposit(){
         float depositValue;
                 
         cout << "Enter Account holder Name: ";
-        cin >> accountHolderName >> endl;
+        cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
-        cin >> accountNumber >> endl;
+        cin >> accountNumber;
         if (!Database.verify(accountNumber, accountHolderName)){
             cout << "Invalid Account Identification number." << endl;
         }
