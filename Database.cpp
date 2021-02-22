@@ -1,41 +1,11 @@
-#include <string>
 #include <iostream>
-//#include "Account.cpp"
+#include "frontend.h"
 
 using namespace std;
 
-// struct accountNode
-// {
-// 	Account account;
-// 	struct node* next;
-//};
-
-class Database {
-	private:
-		// accountNode* head, * tail;
-		// Private Variable Declaration for account file location
-		string fileLocation;
-
-	public:
-		Database(); // Constructor
-		~Database(); // Deconstructor
-
-		// Getter and Setter declaration for the account file location
-		void setFileLocation(string location);
-		string getFileLocation(void);
-
-		// Method Declarations for Database Instance
-		bool changeBalance(string accountHolder, int accountNumber, float amount);
-		int create(string accountHolder, float initBalance);
-		void discard();
-		void disable();
-		void changeplan();
-		bool verify(int accountNumber, string accountName);
-};
-
 Database::Database(void) {
-	//head = NULL;
-	//tail = NULL;
+	head = NULL;
+	tail = NULL;
 	cout << "Database is being created" << endl;
 }
 
@@ -61,23 +31,25 @@ int Database::create(string accountHolder, float initBalance) {
 	// Creates a new instance of the account class using the
 	// provided account holder name and initial balance
 
-	// if (tail != NULL) {
-	//	cout << tail->number << endl;
-	//	return 2;
-	//}
-	//else {
-	//	Account account = new Account(1, accountHolder, initBalance);
-	//	head = account;
-	//	tail = account;
+	if (tail != NULL) {
+		//cout << tail->number << endl;
+		return 2;
+	}
+	else {
+		// accountNode *tmp = new accountNode;
+		// Account *account = new Account(1, "Test Name", 100.0);
+		// tmp->account = account;
+		// accountNode->next = NULL;
+		
+		// head = tmp;
+		// tail = tmp;
 
 		// Returns the account number of the newly created account number
-	//	return account.number;
-	//}
+		return 1;
+	}
 }
 
 void Database::discard() {
-	//Account account = new Account(1, accountHolder, initBalance);
-	//return account.number;
 }
 
 void Database::disable() {
@@ -96,7 +68,7 @@ int main() {
 	Database obj;
 
 	obj.changeBalance("Test Account 1", 100000000, 10.0);
-	//obj.create("Test Account 1", 10.0);
+	obj.create("Test Account 1", 10.0);
 
 
 	return 0;
