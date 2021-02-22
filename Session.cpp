@@ -4,8 +4,6 @@
 
 using namespace std;
 
-
-
 bool Session::login(){
 	if (!isActive){
 		string sessionType;
@@ -19,13 +17,13 @@ bool Session::login(){
 			isPrivileged = true;
 			isActive = true;
 			handler = new Database();
-			transactionLog = new std::string[0];
+ 			// changed to a vector
 		} else if (sessionType == standardType){
 			cout << "Session request successful." << endl;
 			isPrivileged = false;
 			isActive = true;
 			handler = new Database();
-			transactionLog = new std::string[0];
+ 			// changed to a vector
 		} else {
 			cout << "Invalid session type." << endl;
 		}
@@ -47,11 +45,11 @@ bool Session::logout(){
 }
 
 bool Session::withdrawal(){
-
+	return true;
 }
 
 bool Session::transfer(){
-
+	return true;
 }
 
 bool Session::deposit(){
@@ -86,24 +84,37 @@ bool Session::deposit(){
 }
 
 bool Session::changeplan(){
+	// true if turned to student and false other3ise
 	string accountHolderName;
 	int accountNumber;
+	string logLine;
+	string protocol = "08";
+	string tab = "\t\t ";
+	string stdAccountPlan = "SP";
+	string nonStdAccountPlan = "NP";
 
 	if (isPrivileged){
 		cout << "Enter User Identification: ";
 		cin >> accountHolderName;
 		cout << "Enter account number: ";
 		cin >> accountNumber;
-		handler->changeplan(accountNumber, accountHolderName);
+		if (handler->changeplan(accountNumber, accountHolderName)){
+			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + "0000.00" + stdAccountPlan;
+			transactionLog.push_back(logLine); // changed to vector
+		} else {
+			logLine = protocol + " " + accountHolderName + tab + to_string(accountNumber) + "0000.00" + nonStdAccountPlan;
+			transactionLog.push_back(logLine); // changed to a vector
+		}
 	}
 }
 
 bool Session::discard(){
+	return true;
 
 }
 
 bool Session::disable(){
-
+	return true;
 }
 
 bool Session::create(){
@@ -146,12 +157,11 @@ bool Session::create(){
 	}
 }
 
-/*
+
 int main() {
   Session x;
 
   x.login();
-  x.logout();
   return 0;
 }
-*/
+
