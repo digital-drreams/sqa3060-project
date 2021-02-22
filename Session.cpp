@@ -69,8 +69,6 @@ class Session {
                 cin >> accountNumber >> endl;
                 if (!Database.verify(accountNumber, accountHolderName)){
                     cout << "Invalid Account Identification number." << endl;
-                } else {
-
                 }
 
             }
@@ -115,3 +113,12 @@ class Session {
             }
         }
 };
+/*
+int main() {
+  Session x;
+
+  x.login();
+  x.logout();
+  return 0;
+}
+*/

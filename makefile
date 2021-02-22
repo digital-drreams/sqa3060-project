@@ -1,6 +1,10 @@
 CFLAGS = -g++ -Wall
 
 all : Account Session Database Main
+	cc -g -o atm Account.o Session.o Database.o Main.o
+
+clean : 
+	rm atm Account.o Session.o Database.o Main.o
 
 Account : Account.o
 	cc -g -o Account Account.o -lstdc++
