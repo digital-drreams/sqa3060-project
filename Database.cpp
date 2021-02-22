@@ -49,10 +49,10 @@ int Database::create(string accountHolder, float initBalance) {
 	}
 }
 
-void Database::discard() {
+void Database::discard(int id, string name) {
 }
 
-void Database::disable() {
+void Database::disable(int id, string name) {
 
 }
 

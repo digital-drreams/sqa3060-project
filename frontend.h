@@ -31,8 +31,8 @@ public:
 	// Method Declarations for Database Instance
 	bool changeBalance(int accountNumber, string accountHolder, float amount);
 	int create(string accountHolder, float initBalance);
-	void discard();
-	void disable();
+	void discard(int id, string name);
+	void disable(int id, string name);
 	bool changeplan(int id, string name);
 	bool verify(int accountNumber, string accountName);
 
