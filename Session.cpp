@@ -64,7 +64,7 @@ bool Session::deposit(){
 		cin >> accountHolderName;
 		cout << "Enter Account Identification number: ";
 		cin >> accountNumber;
-		if (!handler.verify(accountNumber, accountHolderName)){
+		if (!handler->verify(accountNumber, accountHolderName)){
 			cout << "Enter amount to be deposited: ";
 			cin >> depositValue;
 		}
@@ -75,7 +75,7 @@ bool Session::deposit(){
 	} else {
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (!handler.verify(accountNumber, username)){
+        if (!handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
         } else {
