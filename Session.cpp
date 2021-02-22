@@ -40,7 +40,7 @@ bool Session::logout(){
 	if (isActive){
 		isActive = false;
 		cout << "Session terminated." << endl;
-		for (int i = 0; i < sizeof(transactionLog); i++){
+		for (unsigned i = 0; i < transactionLog.size(); i++){
 			cout << transactionLog[i];
 		}
 		return true;
@@ -134,12 +134,24 @@ bool Session::create(){
 
 			if (acc.length() > 20) { //Is the name format valid?
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
+				return false;
 			}
 			else {
 				float balance;
 				cout << "Enter initial balance: ";
 				cin >> balance;
-
+				
+				balance = floor(balance * 100.0) / 100.0; //Rounds to two decimal places
+				
+				if (balance >= 100000.00) { //Is the balance input too large?
+					cout << "Error: Initial balance must be less than $100000.00." << endl;
+					return false;
+				}
+				else {
+					printf("Account created successfully; account #%05i", handler->create(acc, balance));
+					cout << endl;
+					return true;
+				}
 			}
 		}
 		else {
