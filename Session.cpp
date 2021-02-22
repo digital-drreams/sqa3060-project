@@ -59,6 +59,7 @@ bool Session::deposit(){
     string accountHolderName;
     int accountNumber;
     float depositValue;
+
     if (isPrivileged){ // if user is ADMIN, ask for name and account number
         cout << "Enter Account holder Name: ";
         cin >> accountHolderName;
@@ -85,7 +86,16 @@ bool Session::deposit(){
 }
 
 bool Session::changeplan(){
+	string accountHolderName;
+	int accountNumber;
 
+	if (isPrivileged){
+		cout << "Enter User Identification: ";
+		cin >> accountHolderName;
+		cout << "Enter account number: ";
+		cin >> accountNumber;
+		handler->changeplan(accountNumber, accountHolderName);
+	}
 }
 
 bool Session::discard(){
