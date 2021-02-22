@@ -4,7 +4,7 @@
 
 using namespace std;
 
-std::string* Session::transactionLog = new std::string[0];
+string* Session::transactionLog = new std::string[0];
 
 
 bool Session::login(){
@@ -102,7 +102,9 @@ bool Session::create(){
                 else {
 
                 }
-                if (buffer.length() > 6)
+                if (buffer.length() > 6) {
+
+                }
 
 
             }
