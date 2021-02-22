@@ -66,13 +66,3 @@ bool Database::changeplan(int id, string name) {
 bool Database::verify(int accountNumber, string accountName) {
 	return true;
 }
-
-/*int main() {
-	Database obj;
-
-	obj.changeBalance(100000000, "Test Account 1", 10.0);
-	obj.create("Test Account 1", 10.0);
-
-
-	return 0;
-}*/

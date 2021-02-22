@@ -18,17 +18,21 @@ bool Session::login(){
 			isActive = true;
 			handler = new Database();
  			// changed to a vector
+			return true;
 		} else if (sessionType == standardType){
 			cout << "Session request successful." << endl;
 			isPrivileged = false;
 			isActive = true;
 			handler = new Database();
  			// changed to a vector
+			return true;
 		} else {
 			cout << "Invalid session type." << endl;
+			return false;
 		}
 	} else {
 		cout << "Already logged in to a session" << endl;
+		return false;
 	}
 }
 
@@ -39,8 +43,10 @@ bool Session::logout(){
 		for (int i = 0; i < sizeof(transactionLog); i++){
 			cout << transactionLog[i];
 		}
+		return true;
 	} else {
 		cout << "Error: Cannot logout outside of session." << endl;
+		return false;
 	}
 }
 
@@ -67,9 +73,9 @@ bool Session::deposit(){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler->changeBalance(accountNumber, accountHolderName, depositValue);
-        } else {
+		} else {
             cout << "Invalid Account Identification number." << endl;
-        }
+		}
     } else { // if user is standard, ask for account number
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
@@ -81,6 +87,7 @@ bool Session::deposit(){
             cout << "Invalid Account Identification number." << endl;
         }
     }
+	return true; //Placeholder, arrange return properly when complete (consider changing returntype to void)
 }
 
 bool Session::changeplan(){
@@ -106,6 +113,7 @@ bool Session::changeplan(){
 			transactionLog.push_back(logLine); // changed to a vector
 		}
 	}
+	return true; //Placeholder, arrange return properly when complete (consider changing returntype to void)
 }
 
 bool Session::discard(){
@@ -129,22 +137,8 @@ bool Session::create(){
 			}
 			else {
 				float balance;
-				string buffer;
 				cout << "Enter initial balance: ";
-				cin >> buffer;
-						
-				if (buffer.find('.') != -1) {
-					buffer = buffer.substr(0, buffer.find('.') + 2); //Truncates long decimals
-				}
-				else { //Adds decimals if none were input
-					buffer = buffer + ".00";
-				}
-
-				if (buffer.length() > 6) {
-					cout << "Error: Amount input too long. Must be less than 100000.00";
-				}
-				
-
+				cin >> balance;
 
 			}
 		}
@@ -155,13 +149,5 @@ bool Session::create(){
 	else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
 	}
+	return true; //Placeholder, arrange return properly when complete (consider changing returntype to void)
 }
-
-
-int main() {
-  Session x;
-
-  x.login();
-  return 0;
-}
-
