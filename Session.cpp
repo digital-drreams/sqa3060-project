@@ -86,6 +86,7 @@ bool Session::deposit(){
 }
 
 bool Session::changeplan(){
+	// true if student and false other3ise
 	string accountHolderName;
 	int accountNumber;
 
@@ -94,7 +95,11 @@ bool Session::changeplan(){
 		cin >> accountHolderName;
 		cout << "Enter account number: ";
 		cin >> accountNumber;
-		handler->changeplan(accountNumber, accountHolderName);
+		if (handler->changeplan(accountNumber, accountHolderName)){
+
+		}
+
+
 	}
 }
 
