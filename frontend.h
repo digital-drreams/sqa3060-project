@@ -29,7 +29,7 @@ public:
 	string getFileLocation(void);
 
 	// Method Declarations for Database Instance
-	bool changeBalance(string accountHolder, int accountNumber, float amount);
+	bool changeBalance(int accountNumber, string accountHolder, float amount);
 	int create(string accountHolder, float initBalance);
 	void discard();
 	void disable();

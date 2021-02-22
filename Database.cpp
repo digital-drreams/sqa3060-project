@@ -21,7 +21,7 @@ string Database::getFileLocation(void) {
 	return fileLocation;
 }
 
-bool Database::changeBalance(string accountHolder, int accountNumber, float amount) {
+bool Database::changeBalance(int accountNumber, string accountHolder, float amount) {
 	cout << "Changing Balance" << endl;
 
 	return true;
@@ -67,7 +67,7 @@ bool Database::verify(int accountNumber, string accountName) {
 int main() {
 	Database obj;
 
-	obj.changeBalance("Test Account 1", 100000000, 10.0);
+	obj.changeBalance(100000000, "Test Account 1", 10.0);
 	obj.create("Test Account 1", 10.0);
 
 
