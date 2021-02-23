@@ -6,52 +6,54 @@
 using namespace std;
 
 bool Session::login(){
-	if (!isActive){
+	// function takes care of login requests and returns true if login is succesful
+	if (!isActive){ // if user is not already logged into a session, create a new session by logging in
 		string sessionType;
 		string adminType = "admin";
 		string standardType = "standard";
 		cout << "Welcome to the banking system." << endl;
 		cout << "Enter session type: ";
 		cin >> sessionType;
-		if (sessionType == adminType){
+		if (sessionType == adminType){ // check if user request is admin.
 			cout << "Session request successful." << endl;
 			isPrivileged = true;
 			isActive = true;
 			handler = new Database();
 			sessionLimit = 10000000.00;
 			return true;
-		} else if (sessionType == standardType){
+		} else if (sessionType == standardType){ // check if user request is standard.
 			cout << "Session request successful." << endl;
 			isPrivileged = false;
 			isActive = true;
 			handler = new Database();
 			sessionLimit = 500.00;
 			return true;
-		} else {
+		} else { // if none of the above, return error
 			cout << "Invalid session type." << endl;
 			return false;
 		}
-	} else {
+	} else { // if user is already logged in, return error
 		cout << "Already logged in to a session." << endl;
 		return false;
 	}
 }
 
 bool Session::logout(){
-	if (isActive){
+	if (isActive){ // cehck if user is logged in
 		isActive = false;
 		cout << "Session terminated." << endl;
-		for (unsigned i = 0; i < transactionLog.size(); i++){
+		for (unsigned i = 0; i < transactionLog.size(); i++){ // output transaction log file
 			cout << transactionLog[i];
 		}
 		return true;
-	} else {
+	} else { // otherwise return error if user is not logged into a session
 		cout << "Error: Cannot logout outside of session." << endl;
 		return false;
 	}
 }
 
 bool Session::withdrawal(){
+	// function takes care of withdrawal requests and returns true if no issues have occured 
 	string accountHolderName;
     int accountNumber;
     float withdrawValue;
@@ -62,14 +64,14 @@ bool Session::withdrawal(){
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
-        if (handler->verify(accountNumber, accountHolderName)){
+        if (handler->verify(accountNumber, accountHolderName)){ //verify account credentials
             cout << "Enter amount to be withdrawn: ";
             cin >> withdrawValue;
 			if (typeid(withdrawValue).name() != floatType){
 				cout << "Amount entered must be set to base10." << endl;
 				return false;
 			} else {
-				if (handler->changeBalance(accountNumber, username, -withdrawValue)){
+				if (handler->changeBalance(accountNumber, username, -withdrawValue)){ // withdraw requested amount if possible
 					return true;
 				} else {
 					return false;
@@ -89,7 +91,7 @@ bool Session::withdrawal(){
 				cout << "Amount entered must be set to base10." << endl;
 				return false;
 			} else {
-				if (withdrawValue <= sessionLimit){
+				if (withdrawValue <= sessionLimit){ // check if withdrawal amount is within standard limit
 					if (handler->changeBalance(accountNumber, username, -withdrawValue)){
 						return true;
 					} else {
@@ -108,6 +110,7 @@ bool Session::withdrawal(){
 }
 
 bool Session::transfer(){
+	// function takes care of transfer requests and returns true if no issues have occured
 	string accountHolderName;
     int sndrAccountNumber;
 	int recpAccountNumber;
@@ -119,7 +122,7 @@ bool Session::transfer(){
 	string tab = "\t\t ";
 
 
-	if (isPrivileged){ // FOR ADMIN SESSION
+	if (isPrivileged){ // check if user is logged in as admin
 		cout << "Enter User Identification: ";
         cin >> accountHolderName;
         cout << "Enter host account number: ";
@@ -129,8 +132,8 @@ bool Session::transfer(){
 		if ((handler->verify(sndrAccountNumber, accountHolderName)) && (handler->verify(recpAccountNumber, accountHolderName))){
 			cout << "Enter amount to transfer: ";
 			cin >> transferValue;
-			if (handler->changeBalance(sndrAccountNumber, accountHolderName, -transferValue)){ // check for sender balance
-				handler->changeBalance(recpAccountNumber, accountHolderName, transferValue);
+			if (handler->changeBalance(sndrAccountNumber, accountHolderName, -transferValue)){ // check for sender balance, go ahead with transfer if possible
+				handler->changeBalance(recpAccountNumber, accountHolderName, transferValue); 
 				logLine  = protocol + accountHolderName + tab + to_string(recpAccountNumber) + " " + to_string(transferValue);
 				transactionLog.push_back(logLine);
 				return true;
@@ -143,8 +146,7 @@ bool Session::transfer(){
 			return false;
 		}
 
-	} else {
-
+	} else { // if user is logged in as standard
 		cout << "Enter host account number: ";
         cin >> sndrAccountNumber;
 		cout << "Enter recipient account number: ";
@@ -152,8 +154,8 @@ bool Session::transfer(){
 		if ((handler->verify(sndrAccountNumber, accountHolderName)) && (handler->verify(recpAccountNumber, accountHolderName))){
 			cout << "Enter amount to transfer: ";
 			cin >> transferValue;
-			if (transferValue <= transferLimit){
-				if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance
+			if (transferValue <= transferLimit){ // check if requested transfer value is within the standard limit for transfer
+				if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
 					handler->changeBalance(recpAccountNumber, username, transferValue);
 					logLine  = protocol + username + tab + to_string(recpAccountNumber) + " " + to_string(transferValue);
 					transactionLog.push_back(logLine);
@@ -174,11 +176,12 @@ bool Session::transfer(){
 }
 
 bool Session::deposit(){
+	// function takes care of deposit requests and returns true if no issues have occured.
     string accountHolderName;
     int accountNumber;
     float depositValue;
 
-    if (isPrivileged){ // if user is ADMIN, ask for name and account number
+    if (isPrivileged){ // check if user is admin, ask for name and account number
         cout << "Enter Account holder Name: ";
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
@@ -186,19 +189,19 @@ bool Session::deposit(){
         if (handler->verify(accountNumber, accountHolderName)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
-			handler->changeBalance(accountNumber, accountHolderName, depositValue);
+			handler->changeBalance(accountNumber, accountHolderName, depositValue); // depositre requested value
 			return true;
 		} else {
             cout << "Invalid Account Identification number." << endl;
 			return false;
 		}
-    } else { // if user is standard, ask for account number
+    } else { // check if user is standard, ask for account number
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
         if (handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
-			handler->changeBalance(accountNumber, username, depositValue);
+			handler->changeBalance(accountNumber, username, depositValue); // deposit requested value
 			return true;
         } else {
             cout << "Invalid Account Identification number." << endl;
@@ -209,7 +212,7 @@ bool Session::deposit(){
 }
 
 bool Session::changeplan(){
-	// true if turned to student and false other3ise
+	// functions takes care of change plan requests, returns true if no issues have occured.
 	string accountHolderName;
 	int accountNumber;
 	string logLine;
@@ -218,12 +221,12 @@ bool Session::changeplan(){
 	string stdAccountPlan = "SP";
 	string nonStdAccountPlan = "NP";
 
-	if (isPrivileged){
+	if (isPrivileged){ // check if user is logged in as admin, this is an admin operation only
 		cout << "Enter User Identification: ";
 		cin >> accountHolderName;
 		cout << "Enter account number: ";
 		cin >> accountNumber;
-		if (handler->changeplan(accountNumber, accountHolderName)){
+		if (handler->changeplan(accountNumber, accountHolderName)){ // change plan and output the change to the transaction log array
 			logLine = protocol + accountHolderName + tab + to_string(accountNumber) + " 00000.00 " + stdAccountPlan;
 			transactionLog.push_back(logLine);
 		} else {
