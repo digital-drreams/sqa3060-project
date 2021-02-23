@@ -32,7 +32,6 @@ bool Database::changeBalance(int id, string name, float amount) {
 	if (verify(id, name) == true) {
 		// Obtains current balance of the account
 		float currentBalance = foundAccount->account->balance;
-		cout << currentBalance << endl;
 		// Returns false if the current transaction will cause the account balance
 		// to have a negative balance
 		if (currentBalance + amount < 0) {
@@ -41,6 +40,7 @@ bool Database::changeBalance(int id, string name, float amount) {
 		// Otherwise, perform transaction on account
 		else {
 			foundAccount->account->balance = currentBalance + amount;
+			return true;
 		}
 	}
 
