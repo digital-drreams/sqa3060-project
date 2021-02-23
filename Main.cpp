@@ -12,6 +12,7 @@ int main() {
 
 	//Loops for the time the atm would be active for
 	while (true){
+		cout << ">";
 		//User enters the input for their 
 		cin >> in;
 

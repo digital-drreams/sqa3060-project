@@ -280,28 +280,33 @@ bool Session::discard(){
 }
 
 bool Session::disable(){
-    string accountHolderName;
+    string accountHolderName;//variable holders
 	int accountNumber;
+	if(isActive){ //checks if the user is active
+		if(isPrivileged){ //Checks if the user is signed in on admin
+			cout << "Enter User Identification: "; //User inputs their information
+			cin >> accountHolderName;
+			cout << "Enter account number: ";
+			cin >> accountNumber;
+			if(!handler->verify(accountNumber,accountHolderName)){ //Verify the account is owned by the user
+				//Disable account
+				handler->disable(accountNumber, accountHolderName);
 
-    if(isPrivileged){
-        cout << "Enter User Identification: ";
-        cin >> accountHolderName;
-        cout << "Enter account number: ";
-        cin >> accountNumber;
-        if(!handler->verify(accountNumber,accountHolderName)){
-            //Disable account
-            handler->disable(accountNumber, accountHolderName);
-
-            cout << "Account " << accountNumber << " disabled successfully" << endl;
-        }
-        else{
-            cout << "Error: Account " << accountNumber << " does not exist" << endl;
-        }
-
-    }else{
-        cout << "Permission Denied: Must be an admin to disable an account" << endl;
-    }
+				//Output for the user
+				cout << "Account " << accountNumber << " disabled successfully" << endl;
+			}
+			//If the account doesn't belong to the user
+			else{
+				cout << "Error: Account " << accountNumber << " does not exist" << endl;
+			}
+		//If the user is not signed in on admin
+		}else{
+			cout << "Permission Denied: Must be an admin to disable an account" << endl;
+		}
+	}
+	//Returns true after the function successfully executes
 	return true;
+
 }
 
 bool Session::create(){
