@@ -69,7 +69,7 @@ bool Session::withdrawal(){
 	string tab = "\t\t\t\t ";
 
     if (isPrivileged && isActive){ // if user is ADMIN, ask for name and account number
-        cout << "Enter User Identification ";
+        cout << "Enter User Identification: ";
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
@@ -274,6 +274,10 @@ bool Session::changeplan(){
 }
 
 bool Session::discard(){
+	string logLine;
+	string protocol = "06 ";
+	string tab = "\t\t\t\t ";
+	string id;
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //Are they an admin?
 			string name;
@@ -284,12 +288,13 @@ bool Session::discard(){
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
 			}
 			else {
-				int id;
 				cout << "Enter account identifiction number: ";
 				cin >> id;
 
-				if (handler->verify(id, name)) { //Does such an account exist?
-					if (handler->discard(id, name)) { //Was the discard successful?
+				if (handler->verify(stoi(id), name)) { //Does such an account exist?
+					if (handler->discard(stoi(id), name)) { //Was the discard successful?
+						logLine = protocol + name + tab + id + " " + "00000.00";
+						transactionLog.push_back(logLine);
 						cout << "Account deleted successfully." << endl;
 						return true;
 					}
@@ -315,16 +320,21 @@ bool Session::discard(){
 
 bool Session::disable(){
     string accountHolderName;//variable holders
-	int accountNumber;
+	string logLine;
+	string protocol = "07 ";
+	string tab = "\t\t\t\t ";
+	string accountNumber;
 	if(isActive){ //checks if the user is active
 		if(isPrivileged){ //Checks if the user is signed in on admin
 			cout << "Enter User Identification: "; //User inputs their information
 			cin >> accountHolderName;
 			cout << "Enter account number: ";
 			cin >> accountNumber;
-			if(!handler->verify(accountNumber,accountHolderName)){ //Verify the account is owned by the user
+			if(handler->verify(stoi(accountNumber), accountHolderName)){ //Verify the account is owned by the user
 				//Disable account
-				handler->disable(accountNumber, accountHolderName);
+				handler->disable(stoi(accountNumber), accountHolderName);
+				logLine = protocol + accountHolderName + tab + accountNumber + " " + "00000.00";
+				transactionLog.push_back(logLine);
 
 				//Output for the user
 				cout << "Account " << accountNumber << " disabled successfully" << endl;
