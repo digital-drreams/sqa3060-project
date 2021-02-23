@@ -128,7 +128,7 @@ bool Session::withdrawal(){
 bool Session::transfer(){
 	// function takes care of transfer requests and returns true if no issues have occured
 	string accountHolderName;
-    int sndrAccountNumber;
+    string sndrAccountNumber;
 	string recpAccountNumber;
     float transferValue;
 	string floatType = "float";
@@ -145,13 +145,14 @@ bool Session::transfer(){
         cin >> sndrAccountNumber;
 		cout << "Enter recipient account number: ";
 		cin >> recpAccountNumber;
-		if ((handler->verify(sndrAccountNumber, accountHolderName)) && (handler->verify(stoi(recpAccountNumber), accountHolderName))){
+		if ((handler->verify(stoi(sndrAccountNumber), accountHolderName)) && (handler->verify(stoi(recpAccountNumber), accountHolderName))){
 			cout << "Enter amount to transfer: ";
 			cin >> transferValue;
-			if (handler->changeBalance(sndrAccountNumber, accountHolderName, -transferValue)){ // check for sender balance, go ahead with transfer if possible
+			if (handler->changeBalance(stoi(sndrAccountNumber), accountHolderName, -transferValue)){ // check for sender balance, go ahead with transfer if possible
 				handler->changeBalance(stoi(recpAccountNumber), accountHolderName, transferValue); 
 				logLine  = protocol + accountHolderName + tab + recpAccountNumber + " " + to_string(transferValue);
 				transactionLog.push_back(logLine);
+				transactionLog.push_back(protocol + accountHolderName + tab + sndrAccountNumber + " " + to_string(-transferValue));
 				return true;
 			} else {
 				cout << "Insufficient funds! Try again." << endl;
@@ -167,13 +168,14 @@ bool Session::transfer(){
         cin >> sndrAccountNumber;
 		cout << "Enter recipient account number: ";
 		cin >> recpAccountNumber;
-		if ((handler->verify(sndrAccountNumber, accountHolderName)) && (handler->verify(stoi(recpAccountNumber), accountHolderName))){
+		if ((handler->verify(stoi(sndrAccountNumber), accountHolderName)) && (handler->verify(stoi(recpAccountNumber), accountHolderName))){
 			cout << "Enter amount to transfer: ";
 			cin >> transferValue;
 			if (transferValue <= transferLimit){ // check if requested transfer value is within the standard limit for transfer
-				if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
+				if (handler->changeBalance(stoi(sndrAccountNumber), username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
 					handler->changeBalance(stoi(recpAccountNumber), username, transferValue);
 					logLine  = protocol + username + tab + recpAccountNumber + " " + to_string(transferValue);
+					transactionLog.push_back(protocol + username + tab + sndrAccountNumber + " " + to_string(-transferValue));
 					transactionLog.push_back(logLine);
 					return true;
 				} else {
