@@ -80,7 +80,7 @@ bool Session::withdrawal(){
 				cout << "Amount entered must be set to base10." << endl;
 				return false;
 			} else {
-				if (handler->changeBalance(accountNumber, username, -withdrawValue)){ // withdraw requested amount if possible
+				if (handler->changeBalance(accountNumber, accountHolderName, -withdrawValue)){ // withdraw requested amount if possible
 					logLine = protocol + accountHolderName + tab + to_string(accountNumber) + " " + to_string(withdrawValue);
 					transactionLog.push_back(logLine);
 					return true;
