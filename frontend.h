@@ -4,6 +4,7 @@
 #include <iostream>
 #include <bits/stdc++.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -61,7 +62,7 @@ class Session
 {
 private:
 	bool isPrivileged;
-	bool isActive;
+	bool isActive = false;
 	Database* handler;
 	string username;
 	vector<string> transactionLog;

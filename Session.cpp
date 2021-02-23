@@ -2,6 +2,8 @@
 #include <string>
 #include <typeinfo>
 #include "frontend.h"
+#include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -11,6 +13,7 @@ bool Session::login(){
 		string sessionType;
 		string adminType = "admin";
 		string standardType = "standard";
+		transactionLog.push_back("00000 END_OF_FILE\t\tD 00000.00");
 		cout << "Welcome to the banking system." << endl;
 		cout << "Enter session type: ";
 		cin >> sessionType;
@@ -42,9 +45,12 @@ bool Session::logout(){
 	if (isActive){ // cehck if user is logged in
 		isActive = false;
 		cout << "Session terminated." << endl;
-		for (unsigned i = 0; i < transactionLog.size(); i++){ // output transaction log file
-			cout << transactionLog[i];
+		ofstream logFile("transact.txt");
+		reverse( transactionLog.begin(), transactionLog.end());
+		for (unsigned int i = 0; i < transactionLog.size(); i++){ // output transaction log file
+			logFile << transactionLog.at(i) << endl;
 		}
+		logFile.close();
 		return true;
 	} else { // otherwise return error if user is not logged into a session
 		cout << "Error: Cannot logout outside of session." << endl;
@@ -57,9 +63,12 @@ bool Session::withdrawal(){
 	string accountHolderName;
     int accountNumber;
     float withdrawValue;
-	string floatType = "float";
+	string floatType = "f";
+	string logLine;
+	string protocol = "01 ";
+	string tab = "\t\t\t\t ";
 
-    if (isPrivileged){ // if user is ADMIN, ask for name and account number
+    if (isPrivileged && isActive){ // if user is ADMIN, ask for name and account number
         cout << "Enter User Identification ";
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
@@ -72,6 +81,8 @@ bool Session::withdrawal(){
 				return false;
 			} else {
 				if (handler->changeBalance(accountNumber, username, -withdrawValue)){ // withdraw requested amount if possible
+					logLine = protocol + accountHolderName + tab + to_string(accountNumber) + to_string(withdrawValue);
+					transactionLog.push_back(logLine);
 					return true;
 				} else {
 					return false;
@@ -81,7 +92,7 @@ bool Session::withdrawal(){
 			cout << "Invalid Account Identification number." << endl;
 			return false;
 		}
-    } else { // if user is standard, ask for account number
+    } else if (!isPrivileged && isActive) { // if user is standard, ask for account number
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
         if (handler->verify(accountNumber, username)){
@@ -93,6 +104,8 @@ bool Session::withdrawal(){
 			} else {
 				if (withdrawValue <= sessionLimit){ // check if withdrawal amount is within standard limit
 					if (handler->changeBalance(accountNumber, username, -withdrawValue)){
+						logLine = protocol + username + tab + to_string(accountNumber) + to_string(withdrawValue);
+						transactionLog.push_back(logLine);
 						return true;
 					} else {
 						return false;
@@ -106,7 +119,10 @@ bool Session::withdrawal(){
             cout << "Invalid Account Identification number." << endl;
 			return false;
         }
-    }
+    } else {
+		cout << "Must be logged in." << endl;
+		return false;
+	}
 }
 
 bool Session::transfer(){
@@ -119,10 +135,10 @@ bool Session::transfer(){
 	float transferLimit = 1000.00; // session limit for standard login
 	string logLine;
 	string protocol = "04 ";
-	string tab = "\t\t ";
+	string tab = "\t\t\t\t ";
 
 
-	if (isPrivileged){ // check if user is logged in as admin
+	if (isPrivileged && isActive){ // check if user is logged in as admin
 		cout << "Enter User Identification: ";
         cin >> accountHolderName;
         cout << "Enter host account number: ";
@@ -146,7 +162,7 @@ bool Session::transfer(){
 			return false;
 		}
 
-	} else { // if user is logged in as standard
+	} else if (!isPrivileged && isActive) { // if user is logged in as standard
 		cout << "Enter host account number: ";
         cin >> sndrAccountNumber;
 		cout << "Enter recipient account number: ";
@@ -172,6 +188,9 @@ bool Session::transfer(){
 			cout << "Account is invalid! Try again." << endl;
 			return false;
 		}
+	} else {
+		cout << "Must be logged in" << endl;
+		return false;
 	}
 }
 
@@ -180,8 +199,11 @@ bool Session::deposit(){
     string accountHolderName;
     int accountNumber;
     float depositValue;
+	string logLine;
+	string protocol = "04 ";
+	string tab = "\t\t\t\t ";
 
-    if (isPrivileged){ // check if user is admin, ask for name and account number
+    if (isPrivileged && isActive){ // check if user is admin, ask for name and account number
         cout << "Enter Account holder Name: ";
         cin >> accountHolderName;
         cout << "Enter Account Identification number: ";
@@ -190,25 +212,31 @@ bool Session::deposit(){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler->changeBalance(accountNumber, accountHolderName, depositValue); // depositre requested value
+			logLine = protocol + accountHolderName + tab + to_string(accountNumber) + to_string(depositValue);
+			transactionLog.push_back(logLine);
 			return true;
 		} else {
             cout << "Invalid Account Identification number." << endl;
 			return false;
 		}
-    } else { // check if user is standard, ask for account number
+    } else if (!isPrivileged && isActive) { // check if user is standard, ask for account number
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
         if (handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler->changeBalance(accountNumber, username, depositValue); // deposit requested value
+			logLine = protocol + username + tab + to_string(accountNumber) + to_string(depositValue);
+			transactionLog.push_back(logLine);
 			return true;
         } else {
             cout << "Invalid Account Identification number." << endl;
 			return false;
         }
-    }
-	return true; 
+    } else {
+		cout << "Must be logged in." << endl;
+		return false;
+	} 
 }
 
 bool Session::changeplan(){
@@ -217,11 +245,11 @@ bool Session::changeplan(){
 	int accountNumber;
 	string logLine;
 	string protocol = "08 ";
-	string tab = "\t\t ";
+	string tab = "\t\t\t\t ";
 	string stdAccountPlan = "SP";
 	string nonStdAccountPlan = "NP";
 
-	if (isPrivileged){ // check if user is logged in as admin, this is an admin operation only
+	if (isPrivileged && isActive){ // check if user is logged in as admin, this is an admin operation only
 		cout << "Enter User Identification: ";
 		cin >> accountHolderName;
 		cout << "Enter account number: ";
@@ -234,7 +262,11 @@ bool Session::changeplan(){
 			transactionLog.push_back(logLine); 
 		}
 		return true;
+	} else if (!isPrivileged && isActive) {
+		cout << "Must have Admin privilege." << endl;
+		return false;
 	} else {
+		cout << "Must be logged in." << endl;
 		return false;
 	}
 }
