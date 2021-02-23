@@ -81,7 +81,7 @@ bool Session::withdrawal(){
 				return false;
 			} else {
 				if (handler->changeBalance(accountNumber, username, -withdrawValue)){ // withdraw requested amount if possible
-					logLine = protocol + accountHolderName + tab + to_string(accountNumber) + to_string(withdrawValue);
+					logLine = protocol + accountHolderName + tab + to_string(accountNumber) + " " + to_string(withdrawValue);
 					transactionLog.push_back(logLine);
 					return true;
 				} else {
@@ -104,7 +104,7 @@ bool Session::withdrawal(){
 			} else {
 				if (withdrawValue <= sessionLimit){ // check if withdrawal amount is within standard limit
 					if (handler->changeBalance(accountNumber, username, -withdrawValue)){
-						logLine = protocol + username + tab + to_string(accountNumber) + to_string(withdrawValue);
+						logLine = protocol + username + tab + to_string(accountNumber) + " " + to_string(withdrawValue);
 						transactionLog.push_back(logLine);
 						return true;
 					} else {
@@ -212,7 +212,7 @@ bool Session::deposit(){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler->changeBalance(accountNumber, accountHolderName, depositValue); // depositre requested value
-			logLine = protocol + accountHolderName + tab + to_string(accountNumber) + to_string(depositValue);
+			logLine = protocol + accountHolderName + tab + to_string(accountNumber) + " " + to_string(depositValue);
 			transactionLog.push_back(logLine);
 			return true;
 		} else {
@@ -226,7 +226,7 @@ bool Session::deposit(){
             cout << "Enter amount to be deposited: ";
             cin >> depositValue;
 			handler->changeBalance(accountNumber, username, depositValue); // deposit requested value
-			logLine = protocol + username + tab + to_string(accountNumber) + to_string(depositValue);
+			logLine = protocol + username + tab + to_string(accountNumber) + " "+ to_string(depositValue);
 			transactionLog.push_back(logLine);
 			return true;
         } else {
