@@ -56,9 +56,14 @@ int main() {
 			mySes.disable();
 		}
 
-		//Passes through user input: changeplan
+		//Passes through user input: create
 		else if(in == "create"){
 			mySes.create();
+		}
+
+		//Passes through user input: paybill
+		else if (in == "paybill") {
+			mySes.paybill();
 		}
 
 		//Outputs for an invalid input,

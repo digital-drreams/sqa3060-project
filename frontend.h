@@ -66,7 +66,11 @@ private:
 	Database* handler;
 	string username;
 	vector<string> transactionLog;
-	float sessionLimit;
+	float withdrawLimit;
+	float transferLimit;
+	float ECLimit;
+	float CQLimit;
+	float FILimit;
 
 public:
 	bool login();
@@ -78,6 +82,7 @@ public:
 	bool discard();
 	bool disable();
 	bool create();
+	bool paybill();
 };
 
 #endif
