@@ -166,6 +166,17 @@ bool Database::verify(int id, string name) {
 	}
 }
 
+bool Database::isDisabled(int id, string name) {
+	// Obtains specified account from database
+	accountNode* foundAccount = findAccount(id, name);
+	if (foundAccount != NULL) {
+		// Returns the disabled status of the found account
+		return foundAccount->account->isDisabled;
+	}
+	return NULL;
+	
+}
+
 accountNode* Database::findAccount(int id, string name) {
 	// Variable Declaration
 	accountNode* current = head;
