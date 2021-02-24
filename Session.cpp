@@ -25,6 +25,8 @@ bool Session::login(){
 			sessionLimit = 10000000.00;
 			return true;
 		} else if (sessionType == standardType){ // check if user request is standard.
+			cout << "Enter User Identification: ";
+			cin >> username;
 			cout << "Session request successful." << endl;
 			isPrivileged = false;
 			isActive = true;
