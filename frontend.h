@@ -39,6 +39,7 @@ public:
 	bool changeplan(int id, string name);
 	bool verify(int id, string name);
 	bool isDisabled(int id, string name);
+	bool generateAccounts(string testType);
 
 	// Helper function to find an account
 	accountNode* findAccount(int id, string name);

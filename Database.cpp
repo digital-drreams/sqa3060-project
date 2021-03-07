@@ -7,6 +7,7 @@ Database::Database(void) {
 	// Initializes the head and tail account values
 	head = NULL;
 	tail = NULL;
+	fileLocation = "./Phase 3 Test Reorganization/input/";
 }
 
 Database::~Database(void) {
@@ -175,6 +176,46 @@ bool Database::isDisabled(int id, string name) {
 	}
 	return NULL;
 	
+}
+
+bool Database::generateAccounts(string testType) {
+	// Variable Declaration
+	string line;
+	string prevCommand = "";
+	map<string, int> transactionTypes = {
+		{"withdrawal", 1},
+		{"transfer", 1},
+		{"deposit", 1},
+		{"changeplan", 1},
+		{"delete", 1},
+		{"disable", 1},
+		{"create", 1},
+		{"paybill", 1},
+	};
+	
+	// Opens and reads through the provided input file
+	ifstream inputFile(fileLocation + testType + "_in.txt");
+	
+	// Iterates through each line in the input file and checks to see if
+	// a transaction type was read
+	if (inputFile.is_open())
+	{
+		while (getline(inputFile, line))
+		{
+			// Creates an account using the current line if the previous
+			// line read a transaction type
+			if (transactionTypes[prevCommand] == 1) {
+				create(line, 0.0);
+			}
+			// Reassigns previous line to current line
+			prevCommand = line;
+		}
+		// Closes input file once read
+		inputFile.close();
+		return true;
+	}
+	// Returns false if file cannot be opened
+	return false;
 }
 
 accountNode* Database::findAccount(int id, string name) {
