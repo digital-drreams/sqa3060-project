@@ -79,6 +79,9 @@ int main(int argc, char* argv[]) {
 		else if (in == "paybill") {
 			mySes->paybill();
 		}
+		else if (in == "\n") {
+			break;
+		}
 
 		//Outputs for an invalid input,
 		else{
