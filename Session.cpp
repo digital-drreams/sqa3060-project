@@ -7,6 +7,16 @@
 
 using namespace std;
 
+Session::Session() {
+	string accountFileLocation = "accounts.txt";
+	string transactFileLocation = "transact.txt";
+};
+
+Session::Session(string inLocation, string outLocation) {
+	string accountFileLocation = inLocation;
+	string transactFileLocation = outLocation;
+};
+
 bool Session::login(){
 	// function takes care of login requests and returns true if login is succesful
 	if (!isActive){ // if user is not already logged into a session, create a new session by logging in
@@ -58,7 +68,7 @@ bool Session::logout(){
 		isActive = false;
 		cout << "Session terminated." << endl;
 		transactionLog.push_back("00                      00000 00000.00   ");
-		ofstream logFile("transact.txt");
+		ofstream logFile(transactFileLocation);
 		for (unsigned int i = 0; i < transactionLog.size(); i++){ // output transaction log file
 			logFile << transactionLog.at(i) << endl;
 		}

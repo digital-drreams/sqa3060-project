@@ -72,8 +72,14 @@ private:
 	float ECLimit;
 	float CQLimit;
 	float FILimit;
+	string accountFileLocation;
+	string transactFileLocation;
 
 public:
+	//constructors
+	Session();
+	Session(string inLocation, string outLocation);
+
 	bool login();
 	bool logout();
 	bool withdrawal();

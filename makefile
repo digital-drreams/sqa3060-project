@@ -4,7 +4,7 @@ CFLAGS = -Wall -c
 HEADER = frontend.h
 CPP = Account.cpp Database.cpp Session.cpp Main.cpp
 
-PROGNAME = compiled
+PROGNAME = front-end
 
 OBJ = $(CPP:.cpp=.o)
 

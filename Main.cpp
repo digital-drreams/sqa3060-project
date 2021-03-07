@@ -4,9 +4,23 @@
 
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
+	
 	//Creates the session
-	Session mySes;
+	Session* mySes;
+
+	if (argc == 3) {
+		mySes = new Session(string(argv[1]), string(argv[2]));
+	}
+	else if (argc == 1) {
+		mySes = new Session();
+	}
+	else {
+		//Invalid arguments
+		cerr << "Usage: " << argv[0] << " [BANK ACCOUNT INPUT FILE LOCATION] [TRANSACTION OUTPUT FILE LOCATION]" << endl;
+		return 1;
+	}
+	
 
 	string in;
 
@@ -18,52 +32,52 @@ int main() {
 
 		//Passes through user input: login
 		if(in == "login"){
-			mySes.login();
+			mySes->login();
 		}
 		
 		//Passes through user input: logout
 		else if(in == "logout"){
-			mySes.logout();
+			mySes->logout();
 		}
 
 		//Passes through user input: withdrawal
 		else if(in == "withdrawal"){
-			mySes.withdrawal();
+			mySes->withdrawal();
 		}
 
 		//Passes through user input: transfer
 		else if(in == "transfer"){
-			mySes.transfer();
+			mySes->transfer();
 		}
 		
 		//Passes through user input: deposit
 		else if(in == "deposit"){
-			mySes.deposit();
+			mySes->deposit();
 		}
 
 		//Passes through user input: changeplan
 		else if(in == "changeplan"){
-			mySes.changeplan();
+			mySes->changeplan();
 		}
 
 		//Passes through user input: delete
 		else if(in == "delete"){
-			mySes.discard();
+			mySes->discard();
 		}
 
 		//Passes through user input: disable
 		else if(in == "disable"){
-			mySes.disable();
+			mySes->disable();
 		}
 
 		//Passes through user input: create
 		else if(in == "create"){
-			mySes.create();
+			mySes->create();
 		}
 
 		//Passes through user input: paybill
 		else if (in == "paybill") {
-			mySes.paybill();
+			mySes->paybill();
 		}
 
 		//Outputs for an invalid input,
