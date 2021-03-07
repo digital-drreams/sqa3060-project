@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
 		else if (in == "paybill") {
 			mySes->paybill();
 		}
-		else if (in == "\n") {
+		else if (in == "") {
 			break;
 		}
 
