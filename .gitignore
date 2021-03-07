@@ -1,0 +1,8 @@
+.vs/
+.vscode/
+input/
+expected-output/
+actual-output/
+compiled
+front-end
+*.o
