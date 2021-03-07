@@ -84,6 +84,7 @@ int main(int argc, char* argv[]) {
 		else{
 			cout << "Invalid input" << endl;
 		}
+		//cout << in << endl; //Mention
 		in = "";
 	
 	}
