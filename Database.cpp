@@ -7,7 +7,18 @@ Database::Database(void) {
 	// Initializes the head and tail account values
 	head = NULL;
 	tail = NULL;
-	fileLocation = "./Phase 3 Test Reorganization/input/";
+	fileLocation = "accounts.txt";
+
+	generateAccounts(fileLocation);
+}
+
+Database::Database(string bankLocation) {
+	// Initializes the head and tail account values
+	head = NULL;
+	tail = NULL;
+	fileLocation = bankLocation;
+
+	generateAccounts(fileLocation);
 }
 
 Database::~Database(void) {
@@ -82,6 +93,28 @@ int Database::create(string name, float initBalance) {
 		// Returns the account number of the newly created account number
 		return 1;
 	}
+}
+
+int Database::create(string name, float initBalance, int accountNo) {
+	// As above, but attempts to assign the accountNo given.
+	// Returns the account number of the created account.
+
+	Account* account = new Account(accountNo, name, initBalance);
+	accountNode* tmp = new accountNode;
+	tmp->account = account;
+
+	if (tail != 0) {
+		tail->next = tmp;
+	}
+	else {
+		tmp->next = NULL;
+
+		head = tmp;
+	}
+
+	tail = tmp;
+
+	return accountNo;
 }
 
 bool Database::discard(int id, string name) {
@@ -181,17 +214,6 @@ bool Database::isDisabled(int id, string name) {
 bool Database::generateAccounts(string testType) {
 	// Variable Declaration
 	string line;
-	string prevCommand = "";
-	map<string, int> transactionTypes = {
-		{"withdrawal", 1},
-		{"transfer", 1},
-		{"deposit", 1},
-		{"changeplan", 1},
-		{"delete", 1},
-		{"disable", 1},
-		{"create", 1},
-		{"paybill", 1},
-	};
 	
 	// Opens and reads through the provided input file
 	ifstream inputFile(fileLocation + testType + "_in.txt");
@@ -202,13 +224,17 @@ bool Database::generateAccounts(string testType) {
 	{
 		while (getline(inputFile, line))
 		{
-			// Creates an account using the current line if the previous
-			// line read a transaction type
-			if (transactionTypes[prevCommand] == 1) {
-				create(line, 0.0);
+			string name;
+			int accountNo;
+			float balance;
+
+			if (name != "END_OF_FILE") {
+				accountNo = stoi(line.substr(0, 5));
+				name = line.substr(6, line.find_last_of(' ', 26));
+				balance = stof(line.substr(29, 37));
+
+				create(name, balance, accountNo);
 			}
-			// Reassigns previous line to current line
-			prevCommand = line;
 		}
 		// Closes input file once read
 		inputFile.close();

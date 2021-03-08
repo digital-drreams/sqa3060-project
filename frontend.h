@@ -25,6 +25,7 @@ private:
 public:
 	// Database Constructor
 	Database();
+	Database(string bankLocation);
 	// Database Deconstructor
 	~Database();
 
@@ -34,6 +35,7 @@ public:
 	// Method Declarations for Database Instance
 	bool changeBalance(int id, string name, float amount);
 	int create(string name, float initBalance);
+	int create(string name, float initBalance, int accountNo);
 	bool discard(int id, string name);
 	void disable(int id, string name);
 	bool changeplan(int id, string name);

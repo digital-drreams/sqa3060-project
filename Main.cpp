@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
 	while (true){
 		cout << ">";
 		//User enters the input for their 
-		cin >> in;
+		getline(cin, in);
 
 		//Passes through user input: login
 		if(in == "login"){

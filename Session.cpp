@@ -27,7 +27,7 @@ bool Session::login(){
 
 		cout << "Welcome to the banking system." << endl;
 		cout << "Enter session type: ";
-		cin >> sessionType;
+		getline(cin, sessionType);
 
 		if (sessionType == adminType){ // check if user request is admin.
 			isPrivileged = true;
@@ -39,7 +39,7 @@ bool Session::login(){
 
 		} else if (sessionType == standardType){ // check if user request is standard.
 			cout << "Enter User Identification: ";
-			cin >> username;
+			getline(cin, username);
 			isPrivileged = false;
 			withdrawLimit = 500.00;
 			transferLimit = 1000.00;
@@ -54,7 +54,7 @@ bool Session::login(){
 
 		cout << "Session request successful." << endl;
 		isActive = true;
-		handler = new Database();
+		handler = new Database(accountFileLocation);
 		return true;
 
 	} else { // if user is already logged in, return error
@@ -90,7 +90,7 @@ bool Session::withdrawal(){
     if (isActive){ 
 		if (isPrivileged) { // if user is ADMIN, ask for name
 			cout << "Enter User Identification: ";
-			cin >> username;
+			getline(cin, username);
 		}
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
@@ -138,7 +138,7 @@ bool Session::transfer(){
 	if (isPrivileged && isActive){ // check if user is logged in as admin
 		if (isPrivileged) {
 			cout << "Enter User Identification: ";
-			cin >> username;
+			getline(cin, username);
 		}
         cout << "Enter host account number: ";
         cin >> sndrAccountNumber;
@@ -177,7 +177,7 @@ bool Session::deposit(){
     if (isActive){ // check if user is admin, ask for name
 		if (isPrivileged) {
 			cout << "Enter Account holder Name: ";
-			cin >> username;
+			getline(cin, username);
 		}
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
@@ -206,18 +206,25 @@ bool Session::changeplan(){
 	if (isPrivileged && isActive){ // check if user is logged in as admin, this is an admin operation only
 		cout << "Enter User Identification: ";
 		cin >> username;
-		cout << "Enter account number: ";
-		cin >> accountNumber;
-
-		string plan;
-		if (handler->changeplan(accountNumber, username)){ // change plan and output the change to the transaction log array
-			plan = "SP";
-		} else {
-			plan = "NP";
+		if (username.length() > 20) { //Is the name format valid?
+			cout << "Error: Account holder name must be 20 characters or less." << endl;
+			return false;
 		}
-		sprintf(logLine, "08 %-20s %05i %08.2f %2s", username.data(), accountNumber, 0.0, plan.data());
-		transactionLog.push_back(string(logLine));
-		return true;
+		else {
+			cout << "Enter account number: ";
+			cin >> accountNumber;
+
+			string plan;
+			if (handler->changeplan(accountNumber, username)) { // change plan and output the change to the transaction log array
+				plan = "SP";
+			}
+			else {
+				plan = "NP";
+			}
+			sprintf(logLine, "08 %-20s %05i %08.2f %2s", username.data(), accountNumber, 0.0, plan.data());
+			transactionLog.push_back(string(logLine));
+			return true;
+		}
 	} else if (!isPrivileged && isActive) {
 		cout << "Must have Admin privilege." << endl;
 		return false;
@@ -233,7 +240,7 @@ bool Session::discard(){
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //Are they an admin?
 			cout << "Enter account holder name: ";
-			cin >> username;
+			getline(cin, username);
 
 			if (username.length() > 20) { //Is the name format valid?
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
@@ -276,7 +283,7 @@ bool Session::disable(){
 	if(isActive){ //checks if the user is active
 		if(isPrivileged){ //Checks if the user is signed in on admin
 			cout << "Enter User Identification: "; //User inputs their information
-			cin >> username;
+			getline(cin, username);
 			cout << "Enter account number: ";
 			cin >> accountNumber;
 			if(handler->verify(accountNumber, username)){ //Verify the account is owned by the user
@@ -306,7 +313,7 @@ bool Session::create(){
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //Are they an admin?
 			cout << "Enter account holder name: ";
-			cin >> username;
+			getline(cin, username);
 
 			if (username.length() > 20) { //Is the name format valid?
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
@@ -346,7 +353,7 @@ bool Session::paybill() {
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //If they're an admin, get the account name
 			cout << "Enter account holder name: ";
-			cin >> username;
+			getline(cin, username);
 			if (username.length() > 20) { //Is the name format valid?
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
 				return false;
