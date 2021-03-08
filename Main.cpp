@@ -29,6 +29,7 @@ int main(int argc, char* argv[]) {
 		cout << ">";
 		//User enters the input for their 
 		getline(cin, in);
+		in = in.substr(0, in.find_last_not_of(char(13))+1);
 
 		//Passes through user input: login
 		if(in == "login"){
@@ -87,7 +88,6 @@ int main(int argc, char* argv[]) {
 		else{
 			cout << "Invalid input" << endl;
 		}
-		//cout << in << endl; //Mention
 		in = "";
 	
 	}

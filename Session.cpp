@@ -28,6 +28,7 @@ bool Session::login(){
 		cout << "Welcome to the banking system." << endl;
 		cout << "Enter session type: ";
 		getline(cin, sessionType);
+		sessionType = sessionType.substr(0, sessionType.find_last_not_of(char(13)) + 1);
 
 		if (sessionType == adminType){ // check if user request is admin.
 			isPrivileged = true;
@@ -40,6 +41,7 @@ bool Session::login(){
 		} else if (sessionType == standardType){ // check if user request is standard.
 			cout << "Enter User Identification: ";
 			getline(cin, username);
+			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 			isPrivileged = false;
 			withdrawLimit = 500.00;
 			transferLimit = 1000.00;
@@ -71,6 +73,7 @@ bool Session::logout(){
 		ofstream logFile(transactFileLocation);
 		for (unsigned int i = 0; i < transactionLog.size(); i++){ // output transaction log file
 			logFile << transactionLog.at(i) << endl;
+			cout << "Transaction line " << i << " output" << endl;
 		}
 		logFile.close();
 		return true;
@@ -91,6 +94,7 @@ bool Session::withdrawal(){
 		if (isPrivileged) { // if user is ADMIN, ask for name
 			cout << "Enter User Identification: ";
 			getline(cin, username);
+			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
@@ -139,6 +143,7 @@ bool Session::transfer(){
 		if (isPrivileged) {
 			cout << "Enter User Identification: ";
 			getline(cin, username);
+			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
         cout << "Enter host account number: ";
         cin >> sndrAccountNumber;
@@ -178,6 +183,7 @@ bool Session::deposit(){
 		if (isPrivileged) {
 			cout << "Enter Account holder Name: ";
 			getline(cin, username);
+			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
         cout << "Enter Account Identification number: ";
         cin >> accountNumber;
@@ -205,7 +211,8 @@ bool Session::changeplan(){
 
 	if (isPrivileged && isActive){ // check if user is logged in as admin, this is an admin operation only
 		cout << "Enter User Identification: ";
-		cin >> username;
+		getline(cin, username);
+		username = username.substr(0, username.find_last_not_of('\r'));
 		if (username.length() > 20) { //Is the name format valid?
 			cout << "Error: Account holder name must be 20 characters or less." << endl;
 			return false;
@@ -241,6 +248,7 @@ bool Session::discard(){
 		if (isPrivileged) { //Are they an admin?
 			cout << "Enter account holder name: ";
 			getline(cin, username);
+			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 
 			if (username.length() > 20) { //Is the name format valid?
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
@@ -284,6 +292,7 @@ bool Session::disable(){
 		if(isPrivileged){ //Checks if the user is signed in on admin
 			cout << "Enter User Identification: "; //User inputs their information
 			getline(cin, username);
+			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 			cout << "Enter account number: ";
 			cin >> accountNumber;
 			if(handler->verify(accountNumber, username)){ //Verify the account is owned by the user
@@ -314,6 +323,7 @@ bool Session::create(){
 		if (isPrivileged) { //Are they an admin?
 			cout << "Enter account holder name: ";
 			getline(cin, username);
+			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 
 			if (username.length() > 20) { //Is the name format valid?
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
@@ -354,6 +364,8 @@ bool Session::paybill() {
 		if (isPrivileged) { //If they're an admin, get the account name
 			cout << "Enter account holder name: ";
 			getline(cin, username);
+			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
+
 			if (username.length() > 20) { //Is the name format valid?
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
 				return false;
@@ -368,7 +380,8 @@ bool Session::paybill() {
 			string target;
 			cout << "Possible bill payees, [shorthands bracketed]:" << endl << "The Bright Light Electric Company[EC]" << endl
 				 << "Credit Card Company Q[CQ]" << endl << "Fast Internet, Inc.[FI]" << endl << "Enter bill holder to pay : ";
-			cin >> target;
+			getline(cin, target);
+			target = target.substr(0, target.find_last_not_of(char(13)) + 1);
 			
 			if (target == "EC" || target == "CQ" || target == "FI") {
 				float amount;
