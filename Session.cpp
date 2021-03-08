@@ -73,7 +73,6 @@ bool Session::logout(){
 		ofstream logFile(transactFileLocation);
 		for (unsigned int i = 0; i < transactionLog.size(); i++){ // output transaction log file
 			logFile << transactionLog.at(i) << endl;
-			cout << "Transaction line " << i << " output" << endl;
 		}
 		logFile.close();
 		return true;

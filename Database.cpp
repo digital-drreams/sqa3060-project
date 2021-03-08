@@ -24,7 +24,6 @@ Database::Database(string bankLocation) {
 Database::~Database(void) {
 	// Variable Declaration
 	accountNode* current = head;
-	accountNode* prev = NULL;
 	accountNode* temp;
 
 	// Deletes all accounts from the database
