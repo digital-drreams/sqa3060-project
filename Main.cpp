@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 
 	//Loops for the time the atm would be active for
 	while (true){
-		cout << ">";
+		// cout << ">";
 		//User enters the input for their 
 		getline(cin, in);
 		in = in.substr(0, in.find_last_not_of(char(13))+1);
