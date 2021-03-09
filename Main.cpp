@@ -25,9 +25,8 @@ int main(int argc, char* argv[]) {
 	string in;
 
 	//Loops for the time the atm would be active for
-	while (true){
-		// cout << ">";
-		//User enters the input for their 
+	while (true) {
+		//User enters the input for their
 		getline(cin, in);
 		in = in.substr(0, in.find_last_not_of(char(13))+1);
 
@@ -80,16 +79,16 @@ int main(int argc, char* argv[]) {
 		else if (in == "paybill") {
 			mySes->paybill();
 		}
-		else if (in == "") {
+		//Terminates program when EOF is reached
+		else if (in.empty()) {
 			break;
 		}
-
+		
 		//Outputs for an invalid input,
-		else{
+		else {
 			cout << "Invalid input" << endl;
 		}
 		in = "";
-	
 	}
 
 	return 0;
