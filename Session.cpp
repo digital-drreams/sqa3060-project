@@ -17,6 +17,19 @@ Session::Session(string inLocation, string outLocation) {
 	string transactFileLocation = outLocation;
 };
 
+string refactorUserInput(string prevString, string output) {
+	if (prevString.length() > 2) {
+		if (prevString.substr((prevString.length()-2), prevString.length()) != "\n"){
+			return "\n" + output;
+		} else {
+			return output;
+		}
+	}
+	else {
+		return output;
+	}
+}
+
 bool Session::login(){
 	// function takes care of login requests and returns true if login is succesful
 	if (!isActive){ // if user is not already logged into a session, create a new session by logging in
@@ -39,7 +52,7 @@ bool Session::login(){
 			FILimit = ADMIN_BALANCE;
 
 		} else if (sessionType == standardType){ // check if user request is standard.
-			cout << "Enter User Identification: ";
+			cout << refactorUserInput(sessionType, "Enter User Identification: ");
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 			isPrivileged = false;
@@ -50,11 +63,10 @@ bool Session::login(){
 			FILimit = 2000.00;
 			
 		} else { // if none of the above, return error
-			cout << "Invalid session type." << endl;
+			cout << refactorUserInput(sessionType, "Invalid session type.") << endl;
 			return false;
 		}
-
-		cout << "Session request successful." << endl;
+		cout << refactorUserInput(sessionType, "Session request successful.") << endl;
 		isActive = true;
 		handler = new Database(accountFileLocation);
 		return true;
@@ -95,13 +107,13 @@ bool Session::withdrawal(){
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
-        cout << "Enter Account Identification number: ";
+		cout << refactorUserInput(username, "Enter account holder name: ");
         cin >> accountNumber;
         if (handler->verify(accountNumber, username)){ //verify account credentials
-            cout << "Enter amount to be withdrawn: ";
+			cout << refactorUserInput(to_string(accountNumber), "Enter amount to be withdrawn: ");
             cin >> withdrawValue;
 			if (typeid(withdrawValue).name() != floatType){
-				cout << "Amount entered must be set to base10." << endl;
+				cout << refactorUserInput(to_string(withdrawValue), "Amount entered must be in standard base10 numeric format (decimal accepted).") << endl;
 				return false;
 			} else {
 				if (withdrawValue <= withdrawLimit) { // check if withdrawal amount is within standard limit
@@ -111,17 +123,17 @@ bool Session::withdrawal(){
 						withdrawLimit -= withdrawValue;
 						return true;
 					} else {
-						cout << "Insufficient funds!" << endl;
+						cout << refactorUserInput(to_string(withdrawValue), "Amount entered cannot exceed the account balance.") << endl;
 						return false;
 					}
 				}
 				else {
-					cout << "Amount entered exceeds the limit." << endl;
+					cout << refactorUserInput(to_string(withdrawValue), "Amount entered exceeds the limit.") << endl;
 					return false;
 				}
 			}
 		} else {
-			cout << "Invalid Account Identification number." << endl;
+			cout << refactorUserInput(username, "Invalid account identification number.") << endl;
 			return false;
 		}
     } else {
@@ -140,30 +152,36 @@ bool Session::transfer(){
 
 	if (isPrivileged && isActive){ // check if user is logged in as admin
 		if (isPrivileged) {
-			cout << "Enter User Identification: ";
+			cout << "Enter account holder name: ";
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
-        cout << "Enter host account number: ";
+        cout << "Enter user identification:";
         cin >> sndrAccountNumber;
 		cout << "Enter recipient account number: ";
 		cin >> recpAccountNumber;
 		if ((handler->verify(sndrAccountNumber, username)) && (handler->verify(recpAccountNumber, username))){
 			cout << "Enter amount to transfer: ";
 			cin >> transferValue;
-			if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
-				handler->changeBalance(recpAccountNumber, username, transferValue); 
-				sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), sndrAccountNumber, transferValue);
-				transactionLog.push_back(string(logLine));
-				sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), recpAccountNumber, transferValue);
-				transactionLog.push_back(string(logLine));
-				return true;
-			} else {
-				cout << "Insufficient funds! Try again." << endl;
+			if (transferValue > transferLimit) {
+				cout << "Transfer failed: Amount exceeds session limit." << endl;
 				return false;
+			} else {
+					if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
+					handler->changeBalance(recpAccountNumber, username, transferValue); 
+					sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), sndrAccountNumber, transferValue);
+					transactionLog.push_back(string(logLine));
+					sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), recpAccountNumber, transferValue);
+					transactionLog.push_back(string(logLine));
+					cout << "Transfer successful." << endl;
+					return true;
+				} else {
+					cout << "Insufficient funds! Try again." << endl;
+					return false;
+				}
 			}
 		} else {
-			cout << "Account is invalid! Try again." << endl;
+			cout << "Account number invalid." << endl;
 			return false;
 		}
 	} else {
@@ -180,11 +198,11 @@ bool Session::deposit(){
 
     if (isActive){ // check if user is admin, ask for name
 		if (isPrivileged) {
-			cout << "Enter Account holder Name: ";
+			cout << "Enter account holder name: ";
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
-        cout << "Enter Account Identification number: ";
+        cout << "Enter account identification number: ";
         cin >> accountNumber;
         if (handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
@@ -194,7 +212,7 @@ bool Session::deposit(){
 			transactionLog.push_back(string(logLine));
 			return true;
 		} else {
-            cout << "Invalid Account Identification number." << endl;
+            cout << "Invalid account identification number." << endl;
 			return false;
 		}
     } else {
@@ -209,7 +227,7 @@ bool Session::changeplan(){
 	char* logLine = new char[41];
 
 	if (isPrivileged && isActive){ // check if user is logged in as admin, this is an admin operation only
-		cout << "Enter User Identification: ";
+		cout << "Enter account holder name: ";
 		getline(cin, username);
 		username = username.substr(0, username.find_last_not_of('\r'));
 		if (username.length() > 20) { //Is the name format valid?
@@ -217,15 +235,17 @@ bool Session::changeplan(){
 			return false;
 		}
 		else {
-			cout << "Enter account number: ";
+			cout << "Enter account identification number: ";
 			cin >> accountNumber;
 
 			string plan;
 			if (handler->changeplan(accountNumber, username)) { // change plan and output the change to the transaction log array
 				plan = "SP";
+				cout << "Your non-student payment plan has been changed to a student payment plan (SP)." << endl;
 			}
 			else {
 				plan = "NP";
+				cout << "Your student payment plan has been changed to a non-student payment plan (NP)." << endl;
 			}
 			sprintf(logLine, "08 %-20s %05i %08.2f %2s", username.data(), accountNumber, 0.0, plan.data());
 			transactionLog.push_back(string(logLine));
@@ -264,7 +284,7 @@ bool Session::discard(){
 						return true;
 					}
 					else {
-						cout << "Account has a nonzero balance and cannot be deleted." << endl 
+						cout << "Given account has a nonzero balance and cannot be deleted." << endl 
 							 << "Please make a withdrawal or pay any outstanding fees first." << endl;
 					}
 				}
@@ -289,10 +309,10 @@ bool Session::disable(){
 	int accountNumber;
 	if(isActive){ //checks if the user is active
 		if(isPrivileged){ //Checks if the user is signed in on admin
-			cout << "Enter User Identification: "; //User inputs their information
+			cout << "Enter account holder name: "; //User inputs their information
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
-			cout << "Enter account number: ";
+			cout << "Enter account identification number: ";
 			cin >> accountNumber;
 			if(handler->verify(accountNumber, username)){ //Verify the account is owned by the user
 				//Disable account
@@ -301,11 +321,11 @@ bool Session::disable(){
 				transactionLog.push_back(string(logLine));
 
 				//Output for the user
-				cout << "Account " << accountNumber << " disabled successfully" << endl;
+				cout << "Account disabled successfully" << endl;
 			}
 			//If the account doesn't belong to the user, or doesn't exist
 			else{
-				cout << "Error: Invalid account number." << endl;
+				cout << "Invalid account identification number." << endl;
 			}
 		//If the user is not signed in on admin
 		}else{
@@ -325,7 +345,7 @@ bool Session::create(){
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 
 			if (username.length() > 20) { //Is the name format valid?
-				cout << "Error: Account holder name must be 20 characters or less." << endl;
+				cout << "Name must be shorter than 20 characters." << endl;
 			}
 			else {
 				float balance;
@@ -335,7 +355,7 @@ bool Session::create(){
 				balance = floor(balance * 100.0) / 100.0; //Rounds to two decimal places
 				
 				if (balance >= 100000.00) { //Is the balance input too large?
-					cout << "Error: Initial balance must be less than $100000.00." << endl;
+					cout << "Initial balance can be at most $99999.99." << endl;
 				}
 				else {
 					int num = handler->create(username, balance);
@@ -372,13 +392,13 @@ bool Session::paybill() {
 		}
 
 		int acc;
-		cout << "Enter account number: ";
+		cout << "Enter account identification number: ";
 		cin >> acc;
 		
 		if (handler->verify(acc, username)) { //Verify the account is owned by the user
 			string target;
-			cout << "Possible bill payees, [shorthands bracketed]:" << endl << "The Bright Light Electric Company[EC]" << endl
-				 << "Credit Card Company Q[CQ]" << endl << "Fast Internet, Inc.[FI]" << endl << "Enter bill holder to pay : ";
+			cout << "Possible bill payees, [shorthands bracketed]:" << endl << "The Bright Light Electric Company [EC]" << endl
+				 << "Credit Card Company Q [CQ]" << endl << "Fast Internet, Inc. [FI]" << endl << "Enter bill holder to pay: ";
 			getline(cin, target);
 			target = target.substr(0, target.find_last_not_of(char(13)) + 1);
 			
@@ -411,19 +431,19 @@ bool Session::paybill() {
 						cout << "Insufficient funds!" << endl;
 						return false;
 					}
-					cout << "Bill paid successfully." << endl;
+					cout << "Bill payment successful." << endl;
 					return true;
 				}
 				else {
-					cout << "Error: Amount exceeds bill session payment limit." << endl;
+					cout << "Amount exceeds session bill payment limit." << endl;
 				}
 			}
 			else {
-				cout << "Error: Invalid bill holder." << endl;
+				cout << "Invalid bill holder." << endl;
 			}
 		}
 		else {
-			cout << "Error: Invalid account number." << endl;
+			cout << "Invalid account identification number." << endl;
 		}
 	}
 	else {
