@@ -170,7 +170,7 @@ bool Session::transfer(){
 
 	if (isPrivileged && isActive){ // check if user is logged in as admin
 		if (isPrivileged) {
-			cout << "Enter account holder name: ";
+			cout << "Enter User Identification: ";
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 			cout << refactorUserInput(username, "Enter account number: ");
@@ -204,19 +204,6 @@ bool Session::transfer(){
 			} else {
 				cout << refactorUserInput(to_string(transferValue), "Insufficient funds! Try again.") << endl;
 				return false;
-			} else {
-					if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
-					handler->changeBalance(recpAccountNumber, username, transferValue); 
-					sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), sndrAccountNumber, transferValue);
-					transactionLog.push_back(string(logLine));
-					sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), recpAccountNumber, transferValue);
-					transactionLog.push_back(string(logLine));
-					cout << "Transfer successful." << endl;
-					return true;
-				} else {
-					cout << "Insufficient funds! Try again." << endl;
-					return false;
-				}
 			}
 		} else {
 			cout << refactorUserInput(to_string(recpAccountNumber), "Account is invalid! Try again.") << endl;
@@ -237,7 +224,7 @@ bool Session::deposit(){
 
     if (isActive){ // check if user is admin, ask for name
 		if (isPrivileged) {
-			cout << "Enter account holder name: ";
+			cout << "Enter Account holder Name: ";
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 			cout << refactorUserInput(username, "Enter Account Identification number: ");
@@ -277,7 +264,7 @@ bool Session::changeplan(){
 	string temp; // used to aid input handling/casting
 
 	if (isPrivileged && isActive){ // check if user is logged in as admin, this is an admin operation only
-		cout << "Enter account holder name: ";
+		cout << "Enter User Identification: ";
 		getline(cin, username);
 		username = username.substr(0, username.find_last_not_of('\r'));
 		if (username.length() > 20) { //Is the name format valid?
@@ -285,17 +272,17 @@ bool Session::changeplan(){
 			return false;
 		}
 		else {
-			cout << "Enter account identification number: ";
-			cin >> accountNumber;
+			cout << "Enter account number: ";
+			getline(cin, temp);
+			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+			accountNumber = stoi(temp);
 
 			string plan;
 			if (handler->changeplan(accountNumber, username)) { // change plan and output the change to the transaction log array
 				plan = "SP";
-				cout << "Your non-student payment plan has been changed to a student payment plan (SP)." << endl;
 			}
 			else {
 				plan = "NP";
-				cout << "Your student payment plan has been changed to a non-student payment plan (NP)." << endl;
 			}
 			sprintf(logLine, "08 %-20s %05i %08.2f %2s", username.data(), accountNumber, 0.0, plan.data());
 			transactionLog.push_back(string(logLine));
@@ -365,7 +352,7 @@ bool Session::disable(){
 
 	if(isActive){ //checks if the user is active
 		if(isPrivileged){ //Checks if the user is signed in on admin
-			cout << "Enter account holder name: "; //User inputs their information
+			cout << "Enter User Identification: "; //User inputs their information
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 
