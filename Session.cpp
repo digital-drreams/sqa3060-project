@@ -87,6 +87,7 @@ bool Session::withdrawal(){
     int accountNumber;
     float withdrawValue;
 	string floatType = "f";
+	string temp;
 	char* logLine = new char[41];
 
     if (isActive){ 
@@ -96,10 +97,16 @@ bool Session::withdrawal(){
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
         cout << "Enter Account Identification number: ";
-        cin >> accountNumber;
-        if (handler->verify(accountNumber, username)){ //verify account credentials
+		getline(cin, temp);
+		temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+		accountNumber = stoi(temp);
+        
+		if (handler->verify(accountNumber, username)){ //verify account credentials
             cout << "Enter amount to be withdrawn: ";
-            cin >> withdrawValue;
+            getline(cin, temp);
+			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+			withdrawValue = stof(temp);
+
 			if (typeid(withdrawValue).name() != floatType){
 				cout << "Amount entered must be set to base10." << endl;
 				return false;
@@ -136,6 +143,7 @@ bool Session::transfer(){
 	int recpAccountNumber;
     float transferValue;
 	char* logLine = new char[41];
+	string temp; // used to aid input handling/casting
 
 
 	if (isPrivileged && isActive){ // check if user is logged in as admin
@@ -145,12 +153,21 @@ bool Session::transfer(){
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
         cout << "Enter host account number: ";
-        cin >> sndrAccountNumber;
+		getline(cin, temp);
+		temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+		sndrAccountNumber = stoi(temp);
+        
 		cout << "Enter recipient account number: ";
-		cin >> recpAccountNumber;
+		getline(cin, temp);
+		temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+		recpAccountNumber = stoi(temp);
+		
 		if ((handler->verify(sndrAccountNumber, username)) && (handler->verify(recpAccountNumber, username))){
 			cout << "Enter amount to transfer: ";
-			cin >> transferValue;
+			getline(cin, temp);
+			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+			transferValue = stof(temp);
+			
 			if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
 				handler->changeBalance(recpAccountNumber, username, transferValue); 
 				sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), sndrAccountNumber, transferValue);
@@ -177,6 +194,7 @@ bool Session::deposit(){
     int accountNumber;
     float depositValue;
 	char* logLine = new char[41];
+	string temp; // used to aid input handling/casting
 
     if (isActive){ // check if user is admin, ask for name
 		if (isPrivileged) {
@@ -185,10 +203,16 @@ bool Session::deposit(){
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 		}
         cout << "Enter Account Identification number: ";
-        cin >> accountNumber;
+		getline(cin, temp);
+		temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+		accountNumber = stoi(temp);
+
         if (handler->verify(accountNumber, username)){
             cout << "Enter amount to be deposited: ";
-            cin >> depositValue;
+			getline(cin, temp);
+			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+			depositValue = stof(temp);
+            
 			handler->changeBalance(accountNumber, username, depositValue); // deposit requested value
 			sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), accountNumber, depositValue);
 			transactionLog.push_back(string(logLine));
@@ -207,6 +231,7 @@ bool Session::changeplan(){
 	// functions takes care of change plan requests, returns true if no issues have occured.
 	int accountNumber;
 	char* logLine = new char[41];
+	string temp; // used to aid input handling/casting
 
 	if (isPrivileged && isActive){ // check if user is logged in as admin, this is an admin operation only
 		cout << "Enter User Identification: ";
@@ -218,7 +243,9 @@ bool Session::changeplan(){
 		}
 		else {
 			cout << "Enter account number: ";
-			cin >> accountNumber;
+			getline(cin, temp);
+			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+			accountNumber = stoi(temp);
 
 			string plan;
 			if (handler->changeplan(accountNumber, username)) { // change plan and output the change to the transaction log array
@@ -243,6 +270,8 @@ bool Session::changeplan(){
 bool Session::discard(){
 	char* logLine = new char[41];
 	int id;
+	string temp; // used to aid input handling/casting
+
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //Are they an admin?
 			cout << "Enter account holder name: ";
@@ -254,7 +283,9 @@ bool Session::discard(){
 			}
 			else {
 				cout << "Enter account identifiction number: ";
-				cin >> id;
+				getline(cin, temp);
+				temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+				id = stoi(temp);
 
 				if (handler->verify(id, username)) { //Does such an account exist?
 					if (handler->discard(id, username)) { //Was the discard successful?
@@ -287,13 +318,18 @@ bool Session::disable(){
     //variable holders
 	char* logLine = new char[41];
 	int accountNumber;
+	string temp; // used to aid input handling/casting
+
 	if(isActive){ //checks if the user is active
 		if(isPrivileged){ //Checks if the user is signed in on admin
 			cout << "Enter User Identification: "; //User inputs their information
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
 			cout << "Enter account number: ";
-			cin >> accountNumber;
+			getline(cin, temp);
+			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+			accountNumber = stoi(temp);
+
 			if(handler->verify(accountNumber, username)){ //Verify the account is owned by the user
 				//Disable account
 				handler->disable(accountNumber, username);
@@ -318,6 +354,8 @@ bool Session::disable(){
 }
 
 bool Session::create(){
+	string temp; // used to aid input handling/casting
+
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //Are they an admin?
 			cout << "Enter account holder name: ";
@@ -330,7 +368,9 @@ bool Session::create(){
 			else {
 				float balance;
 				cout << "Enter initial balance: ";
-				cin >> balance;
+				getline(cin, temp);
+				temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+				balance = stof(temp);
 				
 				balance = floor(balance * 100.0) / 100.0; //Rounds to two decimal places
 				
@@ -359,6 +399,8 @@ bool Session::create(){
 }
 
 bool Session::paybill() {
+	string temp; // used to aid input handling/casting
+
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //If they're an admin, get the account name
 			cout << "Enter account holder name: ";
@@ -385,7 +427,9 @@ bool Session::paybill() {
 			if (target == "EC" || target == "CQ" || target == "FI") {
 				float amount;
 				cout << "Enter amount to pay: ";
-				cin >> amount;
+				getline(cin, temp);
+				temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+				amount = stof(temp);
 
 				if ((target == "EC" && ECLimit - amount >= 0.0) || (target == "CQ" && CQLimit - amount >= 0.0) || (target == "FI" && FILimit - amount >= 0.0)) {
 					char* logLine = new char[41];

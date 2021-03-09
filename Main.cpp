@@ -80,16 +80,15 @@ int main(int argc, char* argv[]) {
 		else if (in == "paybill") {
 			mySes->paybill();
 		}
-		else if (in == "") {
+		else if (in.empty()) {
 			break;
 		}
-
+		
 		//Outputs for an invalid input,
 		else{
 			cout << "Invalid input" << endl;
 		}
 		in = "";
-	
 	}
 
 	return 0;
