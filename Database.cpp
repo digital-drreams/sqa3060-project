@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "frontend.h"
 
 using namespace std;
@@ -124,8 +125,8 @@ bool Database::discard(int id, string name) {
 
 	// When accounts exist in the database, iterate through all the accounts to find a matching
 	// account that is associated to the account name provided
-	if (head != 0) {
-		while (current != 0) {
+	if (head != 0 && current != 0) {
+		do {
 			// Obtains account number of the current account
 			int currentID = current->account->number;
 			
@@ -153,7 +154,7 @@ bool Database::discard(int id, string name) {
 				prev = current;
 				current = current->next;
 			}
-		}
+		} while (current != 0 && prev->account->number != tail->account->number);
 		// Returns false indicating that an account was not deleted
 		return false;
 	}
@@ -175,20 +176,23 @@ void Database::disable(int id, string name) {
 bool Database::changeplan(int id, string name) {
 	// Obtains specified account from database
 	accountNode* foundAccount = findAccount(id, name);
-	if (verify(id, name) == true) {
-		// Toggles the status of the account between student and non-student
-		foundAccount->account->isStudent = !foundAccount->account->isStudent;
 
-		// Returns current state of account
+	if (foundAccount != NULL) {
+		if (verify(id, name) == true) {
+			// Toggles the status of the account between student and non-student
+			foundAccount->account->isStudent = !foundAccount->account->isStudent;
+
+			// Returns current state of account
+			return foundAccount->account->isStudent;
+		}
 		return foundAccount->account->isStudent;
 	}
-	return foundAccount->account->isStudent;
+	return NULL;
 }
 
 bool Database::verify(int id, string name) {
 	// Obtains specified account from database
 	accountNode* foundAccount = findAccount(id, name);
-
 	// Checks if account holder name of the found account matches the
 	// provided name
 	if (foundAccount != NULL && strcmp(const_cast<char*>(name.c_str()), const_cast<char*>(foundAccount->account->holder.c_str())) == 0) {
@@ -215,8 +219,7 @@ bool Database::generateAccounts(string testType) {
 	string line;
 	
 	// Opens and reads through the provided input file
-	ifstream inputFile(fileLocation + testType + "_in.txt");
-	
+	ifstream inputFile(fileLocation);
 	// Iterates through each line in the input file and checks to see if
 	// a transaction type was read
 	if (inputFile.is_open())
@@ -229,7 +232,7 @@ bool Database::generateAccounts(string testType) {
 
 			if (name != "END_OF_FILE") {
 				accountNo = stoi(line.substr(0, 5));
-				name = line.substr(6, line.find_last_of(' ', 26));
+				name = line.substr(6, line.find_first_of(' ', 6) - 1);
 				balance = stof(line.substr(29, 37));
 
 				create(name, balance, accountNo);
@@ -246,19 +249,19 @@ bool Database::generateAccounts(string testType) {
 accountNode* Database::findAccount(int id, string name) {
 	// Variable Declaration
 	accountNode* current = head;
+	accountNode* prev = NULL;
 
 	// When the database contains accounts, iterate through each node in the accounts linked list
 	// until an account that matches the provided account ID is found
-	if (head != 0) {
-		while (current != 0) {
+	if (head != 0 && current != 0) {
+		do {
 			int currentID = current->account->number;
-			
 			if (currentID == id) {
 				return current;
 			}
-
+			prev = current;
 			current = current->next;
-		}
+		} while (current != 0 && prev->account->number != tail->account->number);
 	}
 
 	// Returns NULL if an account is not found
