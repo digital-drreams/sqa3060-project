@@ -202,7 +202,7 @@ bool Session::transfer(){
 					transactionLog.push_back(string(logLine));
 					sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), recpAccountNumber, transferValue);
 					transactionLog.push_back(string(logLine));
-					cout << "Transfer successful." "Transfer successful.") << endl;
+					cout << refactorUserInput(to_string(transferValue), "Transfer successful." << endl;
 					return true;
 				} else {
 					cout << refactorUserInput(to_string(transferValue), "Amount entered cannot exceed the account balance.") << endl;
