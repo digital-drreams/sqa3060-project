@@ -4,6 +4,7 @@
 #include "frontend.h"
 #include <fstream>
 #include <vector>
+#include <regex>
 
 using namespace std;
 
@@ -182,38 +183,50 @@ bool Session::transfer(){
 		getline(cin, temp);
 		temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
 		sndrAccountNumber = stoi(temp);
-        
-		cout << refactorUserInput(to_string(sndrAccountNumber), "Enter recipient account number: ");
-		getline(cin, temp);
-		temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
-		recpAccountNumber = stoi(temp);
 		
-		if ((handler->verify(sndrAccountNumber, username)) && (handler->verify(recpAccountNumber, username))){
-			cout << refactorUserInput(to_string(recpAccountNumber), "Enter amount to transfer: ");
+		if (handler->verify(sndrAccountNumber, username)) {
+			cout << refactorUserInput(to_string(sndrAccountNumber), "Enter recipient account number: ");
 			getline(cin, temp);
 			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
-			transferValue = stof(temp);
-			if (transferValue > transferLimit){
-				cout << refactorUserInput(to_string(transferValue), "Transfer failed: Amount exceeds session limit.") << endl;
-				return false;
-			} else {
-				if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
-					handler->changeBalance(recpAccountNumber, username, transferValue); 
-					sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), sndrAccountNumber, transferValue);
-					transactionLog.push_back(string(logLine));
-					sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), recpAccountNumber, transferValue);
-					transactionLog.push_back(string(logLine));
-					cout << refactorUserInput(to_string(transferValue), "Transfer successful.") << endl;
-					return true;
+			recpAccountNumber = stoi(temp);
+
+			if (handler->verify(recpAccountNumber, username)) {
+				if ((handler->verify(sndrAccountNumber, username)) && (handler->verify(recpAccountNumber, username))){
+					cout << refactorUserInput(to_string(recpAccountNumber), "Enter amount to transfer: ");
+					getline(cin, temp);
+					temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+					transferValue = stof(temp);
+					if (transferValue > transferLimit){
+						cout << refactorUserInput(to_string(transferValue), "Transfer failed: Amount exceeds session limit.") << endl;
+						return false;
+					} else {
+						if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
+							handler->changeBalance(recpAccountNumber, username, transferValue); 
+							sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), sndrAccountNumber, transferValue);
+							transactionLog.push_back(string(logLine));
+							sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), recpAccountNumber, transferValue);
+							transactionLog.push_back(string(logLine));
+							cout << refactorUserInput(to_string(transferValue), "Transfer successful.") << endl;
+							return true;
+						} else {
+							cout << refactorUserInput(to_string(transferValue), "Amount entered cannot exceed the account balance.") << endl;
+							return false;
+						}
+					}
 				} else {
-					cout << refactorUserInput(to_string(transferValue), "Amount entered cannot exceed the account balance.") << endl;
+					cout << refactorUserInput(to_string(recpAccountNumber), "Account number invalid.") << endl;
 					return false;
 				}
+			} else {
+				cout << refactorUserInput(to_string(recpAccountNumber), "Invalid account identification number.") << endl;
+				return false;
 			}
-		} else {
-			cout << refactorUserInput(to_string(recpAccountNumber), "Account number invalid.") << endl;
-			return false;
 		}
+		else {
+			cout << refactorUserInput(to_string(sndrAccountNumber), "Invalid account identification number.") << endl;
+		}
+		
+		
 	} else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
 		return false;
@@ -271,7 +284,7 @@ bool Session::changeplan(){
 	if (isPrivileged && isActive){ // check if user is logged in as admin, this is an admin operation only
 		cout << "Enter account holder name: ";
 		getline(cin, username);
-		username = username.substr(0, username.find_last_not_of('\r'));
+		username = username.substr(0, username.find_last_not_of('\r') + 1);
 		if (username.length() > 20) { //Is the name format valid?
 			cout << refactorUserInput(username, "Error: Account holder name must be 20 characters or less.") << endl;
 			return false;
@@ -283,17 +296,23 @@ bool Session::changeplan(){
 			accountNumber = stoi(temp);
 
 			string plan;
-			if (handler->changeplan(accountNumber, username)) { // change plan and output the change to the transaction log array
-				plan = "SP";
-				cout << refactorUserInput(temp, "Your non-student payment plan has been changed to a student payment plan (SP).") << endl;
+
+			if (handler->verify(accountNumber, username)) {
+				if (handler->changeplan(accountNumber, username)) { // change plan and output the change to the transaction log array
+					plan = "SP";
+					cout << refactorUserInput(temp, "Your non-student payment plan has been changed to a student payment plan (SP).") << endl;
+				}
+				else {
+					plan = "NP";
+					cout << refactorUserInput(temp, "Your student payment plan has been changed to a non-student payment plan (NP).") << endl;
+				}
+				sprintf(logLine, "08 %-20s %05i %08.2f %2s", username.data(), accountNumber, 0.0, plan.data());
+				transactionLog.push_back(string(logLine));
+				return true;
 			}
 			else {
-				plan = "NP";
-				cout << refactorUserInput(temp, "Your student payment plan has been changed to a non-student payment plan (NP).") << endl;
+				cout << refactorUserInput(to_string(accountNumber), "Invalid account identification number.") << endl;
 			}
-			sprintf(logLine, "08 %-20s %05i %08.2f %2s", username.data(), accountNumber, 0.0, plan.data());
-			transactionLog.push_back(string(logLine));
-			return true;
 		}
 	} else if (!isPrivileged && isActive) {
 		cout << "Must have Admin privilege." << endl;
@@ -393,6 +412,7 @@ bool Session::disable(){
 
 bool Session::create(){
 	string temp; // used to aid input handling/casting
+	const regex float_regex("[-]?[$]*[0-9]+[.]?[0-9]*?");
 
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //Are they an admin?
@@ -409,25 +429,34 @@ bool Session::create(){
 				cout << refactorUserInput(username, "Enter initial balance: ");
 				getline(cin, temp);
 				temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
-				balance = stof(temp);
-				
-				balance = floor(balance * 100.0) / 100.0; //Rounds to two decimal places
-				
-				if (balance >= 100000.00) { //Is the balance input too large?
-					cout << refactorUserInput(to_string(balance), "Initial balance can be at most $99999.99.") << endl;
+
+				if (!regex_match(temp, float_regex)) {
+					cout << refactorUserInput(temp, "Initial balance format incorrect.") << endl;
 				}
 				else {
-					int num = handler->create(username, balance);
-					if (to_string(balance).length() > 2 && to_string(balance).substr((to_string(balance).length()-2), to_string(balance).length()) != "\n") {
-						printf("\nAccount created successfully; account #%05i", num);
-					} else {
-						printf("Account created successfully; account #%05i", num);
+					// Removes $ from balance string
+					temp.erase(remove(temp.begin(), temp.end(), '$'), temp.end());
+
+					balance = stof(temp);
+					
+					balance = floor(balance * 100.0) / 100.0; //Rounds to two decimal places
+					
+					if (balance >= 100000.00) { //Is the balance input too large?
+						cout << refactorUserInput(to_string(balance), "Initial balance can be at most $99999.99.") << endl;
 					}
-					cout << endl;
-					char* logLine = new char[41];
-					sprintf(logLine, "05 %-20s %05i %08.2f   ", username.data(), num, balance);
-					transactionLog.push_back(string(logLine));
-					return true;
+					else {
+						int num = handler->create(username, balance);
+						if (to_string(balance).length() > 2 && to_string(balance).substr((to_string(balance).length()-2), to_string(balance).length()) != "\n") {
+							printf("\nAccount created successfully; account #%05i", num);
+						} else {
+							printf("Account created successfully; account #%05i", num);
+						}
+						cout << endl;
+						char* logLine = new char[41];
+						sprintf(logLine, "05 %-20s %05i %08.2f   ", username.data(), num, balance);
+						transactionLog.push_back(string(logLine));
+						return true;
+					}
 				}
 			}
 		}

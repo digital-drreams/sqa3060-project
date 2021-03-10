@@ -176,20 +176,23 @@ void Database::disable(int id, string name) {
 bool Database::changeplan(int id, string name) {
 	// Obtains specified account from database
 	accountNode* foundAccount = findAccount(id, name);
-	if (verify(id, name) == true) {
-		// Toggles the status of the account between student and non-student
-		foundAccount->account->isStudent = !foundAccount->account->isStudent;
 
-		// Returns current state of account
+	if (foundAccount != NULL) {
+		if (verify(id, name) == true) {
+			// Toggles the status of the account between student and non-student
+			foundAccount->account->isStudent = !foundAccount->account->isStudent;
+
+			// Returns current state of account
+			return foundAccount->account->isStudent;
+		}
 		return foundAccount->account->isStudent;
 	}
-	return foundAccount->account->isStudent;
+	return NULL;
 }
 
 bool Database::verify(int id, string name) {
 	// Obtains specified account from database
 	accountNode* foundAccount = findAccount(id, name);
-	
 	// Checks if account holder name of the found account matches the
 	// provided name
 	if (foundAccount != NULL && strcmp(const_cast<char*>(name.c_str()), const_cast<char*>(foundAccount->account->holder.c_str())) == 0) {
