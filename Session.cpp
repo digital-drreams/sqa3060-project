@@ -7,14 +7,14 @@
 
 using namespace std;
 
-Session::Session() {
-	string accountFileLocation = "accounts.txt";
-	string transactFileLocation = "transact.txt";
-};
+string accountFileLocation = "accounts.txt";
+string transactFileLocation = "transact.txt";
+
+Session::Session() { };
 
 Session::Session(string inLocation, string outLocation) {
-	string accountFileLocation = inLocation;
-	string transactFileLocation = outLocation;
+	accountFileLocation = inLocation;
+	transactFileLocation = outLocation;
 };
 
 string refactorUserInput(string prevString, string output) {
