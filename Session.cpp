@@ -194,7 +194,7 @@ bool Session::transfer(){
 			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
 			transferValue = stof(temp);
 			if (transferValue > transferLimit){
-				cout << refactorUserInput(to_string(transferValue), "Transfer failed: Amount exceeds session limit." << endl;
+				cout << refactorUserInput(to_string(transferValue), "Transfer failed: Amount exceeds session limit.") << endl;
 			} else {
 				if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
 					handler->changeBalance(recpAccountNumber, username, transferValue); 
