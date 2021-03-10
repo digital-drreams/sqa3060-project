@@ -230,8 +230,8 @@ bool Session::transfer(){
 		
 	} else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
-		return false;
 	}
+	return false;
 }
 
 bool Session::deposit(){
@@ -317,11 +317,10 @@ bool Session::changeplan(){
 		}
 	} else if (!isPrivileged && isActive) {
 		cout << "Must have Admin privilege." << endl;
-		return false;
 	} else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
-		return false;
 	}
+	return false;
 }
 
 bool Session::discard(){
