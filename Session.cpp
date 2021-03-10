@@ -277,7 +277,7 @@ bool Session::changeplan(){
 			return false;
 		}
 		else {
-			cout << "Enter account identification number: ";
+			cout << refactorUserInput(username, "Enter account identification number: ");
 			getline(cin, temp);
 			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
 			accountNumber = stoi(temp);
