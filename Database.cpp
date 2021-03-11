@@ -236,7 +236,7 @@ bool Database::generateAccounts(string testType) {
 			if (name != "END_OF_FILE") {
 				accountNo = line.substr(0, 5);
 				name = line.substr(6, 21);
-				balance = line.substr(29, 37);
+				balance = line.substr(29, 8);
 
 				// Strips extraneous whitespace from account holder names
 				if (name.find_first_of("  ", 6) <= line.length()) {
