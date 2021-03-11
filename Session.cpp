@@ -492,10 +492,10 @@ bool Session::paybill() {
 				cout << "Error: Account holder name must be 20 characters or less." << endl;
 				return false;
 			}
-			cout << refactorUserInput(username, "Enter account number: ");
+			cout << refactorUserInput(username, "Enter account identification number: ");
 		}
 		else {
-			cout << "Enter account number: ";
+			cout << "Enter account identification number: ";
 		}
 
 		int acc;
