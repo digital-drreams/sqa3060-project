@@ -1,12 +1,13 @@
 Welcome to the banking system.
-Enter session type:
+Enter session type: 
+Enter user identification: 
 Session request successful.
-Enter account identification number:
+Enter account identification number: 
 Possible bill payees, [shorthands bracketed]:
 The Bright Light Electric Company [EC]
 Credit Card Company Q [CQ]
 Fast Internet, Inc. [FI]
-Enter bill holder to pay:
-Enter amount to pay:
+Enter bill holder to pay: 
+Enter amount to pay: 
 Bill payment successful.
 Session terminated.

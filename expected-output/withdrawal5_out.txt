@@ -1,9 +1,8 @@
 Welcome to the banking system.
-Enter session type:
-Enter user identification:
+Enter session type: 
+Enter user identification: 
 Session request successful.
-Enter account holder name:
-Enter account identification number:
-Enter amount to be withdrawn:
-Amount entered cannot exceed the account balance. 
+Enter account identification number: 
+Enter amount to be withdrawn: 
+Amount entered cannot exceed the account balance.
 Session terminated.

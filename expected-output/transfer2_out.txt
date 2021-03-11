@@ -1,10 +1,10 @@
 Welcome to the banking system.
-Enter session type:
-Enter user identification:
+Enter session type: 
+Enter user identification: 
 Session request successful.
-Enter host account number:
+Enter host account number: 
 Account number invalid.
-Enter host account number:
-Enter recipient account number:
+Enter host account number: 
+Enter recipient account number: 
 Account number invalid.
 Session terminated.

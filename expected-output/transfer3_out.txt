@@ -1,17 +1,17 @@
 Welcome to the banking system.
-Enter session type:
-Enter user identification:
+Enter session type: 
+Enter user identification: 
 Session request successful.
-Enter host account number:
-Enter recipient account number:
-Enter amount to transfer:
+Enter host account number: 
+Enter recipient account number: 
+Enter amount to transfer: 
 Transfer failed: Amount exceeds session limit.
 Session terminated.
 Welcome to the banking system.
-Enter session type:
+Enter session type: 
 Session request successful.
-Enter host account number:
-Enter recipient account number:
-Enter amount to transfer:
+Enter host account number: 
+Enter recipient account number: 
+Enter amount to transfer: 
 Transfer successful.
 Session terminated.
