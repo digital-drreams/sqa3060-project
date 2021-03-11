@@ -1,0 +1,12 @@
+Error: Transaction not accepted outside of active session.
+Error: Transaction not accepted outside of active session.
+Error: Transaction not accepted outside of active session.
+Error: Transaction not accepted outside of active session.
+Error: Transaction not accepted outside of active session.
+Error: Transaction not accepted outside of active session.
+Error: Transaction not accepted outside of active session.
+Error: Transaction not accepted outside of active session.
+Welcome to the banking system.
+Enter session type: 
+Session request successful.
+Session terminated.

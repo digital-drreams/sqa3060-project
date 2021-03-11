@@ -1,0 +1,15 @@
+Welcome to the banking system.
+Enter session type: 
+Session request successful.
+Enter account holder name: 
+Enter account identification number: 
+Enter amount to be withdrawn: 
+Session terminated.
+Welcome to the banking system.
+Enter session type: 
+Enter user identification: 
+Session request successful.
+Enter account identification number: 
+Enter amount to be withdrawn: 
+Amount entered exceeds the limit.
+Session terminated.

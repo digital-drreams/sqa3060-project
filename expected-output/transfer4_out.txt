@@ -1,0 +1,9 @@
+Welcome to the banking system.
+Enter session type: 
+Enter user identification: 
+Session request successful. 
+Enter host account number: 
+Enter recipient account number: 
+Enter amount to transfer: 
+Amount entered cannot exceed the account balance.
+Session terminated.

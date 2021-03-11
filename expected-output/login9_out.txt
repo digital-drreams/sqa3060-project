@@ -1,0 +1,6 @@
+Welcome to the banking system.
+Enter session type: 
+Enter user identification: 
+Session request successful.
+WARNING: Account information file corrupted. Please notify staff immediately.
+Session terminated.

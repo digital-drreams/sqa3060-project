@@ -1,0 +1,29 @@
+Welcome to the banking system.
+Enter session type: 
+Session request successful.
+Enter account holder name: 
+Enter initial balance: 
+Account created successfully; account #00001.
+Enter account holder name: 
+Enter account identification number: 
+Invalid account identification number.
+Enter account holder name: 
+Enter account identification number: 
+Invalid account identification number.
+Enter account holder name: 
+Enter account identification number: 
+Invalid account identification number.
+Enter account holder name: 
+Enter host account identification number: 
+Enter recipient account identification number: 
+Invalid account identification number.
+Enter account holder name: 
+Enter host account identification number: 
+Invalid account identification number.
+Enter account holder name: 
+Enter account identification number: 
+Invalid account identification number.
+Enter account holder name: 
+Enter account identification number: 
+Invalid account identification number.
+Session terminated.
