@@ -6,5 +6,4 @@ Enter account identification number:
 Account disabled successfully.
 Enter account holder name:
 Enter account identification number:
-Cannot perform transaction on a disabled account.
 Session terminated.

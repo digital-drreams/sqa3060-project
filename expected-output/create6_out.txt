@@ -4,7 +4,6 @@ Session request successful.
 Enter account holder name:
 Enter initial balance:
 Account created successfully; account #00001.
-Restart session to access/modify.
 Enter account holder name:
 Enter account identification number:
 Invalid account identification number.

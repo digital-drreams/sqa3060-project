@@ -6,5 +6,4 @@ Enter account identification number:
 Account deleted successfully.
 Enter account holder name:
 Enter account identification number:
-Cannot perform transactions on a deleted account.
 Session terminated.
