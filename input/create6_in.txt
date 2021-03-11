@@ -1,0 +1,31 @@
+login
+admin
+create
+Test Name
+$25.00
+deposit
+Test Name
+00002
+withdrawal
+Test Name
+00002
+changeplan
+Test Name
+00002
+transfer
+Test Name
+00001
+00002
+transfer
+Test Name
+00002
+disable
+Test Name
+00002
+delete
+Test Name
+00002
+paybill
+Test Name
+00002
+logout

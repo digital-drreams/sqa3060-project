@@ -1,0 +1,9 @@
+login
+standard
+Test Name
+transfer
+00004
+transfer
+00001
+00004
+logout

@@ -1,0 +1,6 @@
+login
+admin
+create
+Test Name
+25.00
+logout

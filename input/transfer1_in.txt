@@ -1,0 +1,15 @@
+login
+admin
+Test Name
+transfer
+00001
+00002
+10.00
+logout
+login
+standard
+transfer
+00001
+00002
+10.00
+logout

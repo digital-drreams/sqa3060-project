@@ -1,0 +1,6 @@
+login
+standard
+Test Name
+deposit
+00002
+logout

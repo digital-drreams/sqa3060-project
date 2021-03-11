@@ -1,0 +1,7 @@
+login
+standard
+Test Name
+withdrawal
+00001
+300.00
+logout

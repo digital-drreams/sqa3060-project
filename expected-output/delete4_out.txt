@@ -1,0 +1,14 @@
+Welcome to the banking system.
+Enter session type:
+Session request successful.
+Enter account holder name:
+Enter account identification number:
+Given account has a nonzero balance and cannot be deleted.
+Please make a withdrawal or pay any outstanding fees first.
+Enter account holder name:
+Enter account identification number:
+Enter amount to be withdrawn:
+Enter account holder name:
+Enter account identification number:
+Account deleted successfully.
+Session terminated.

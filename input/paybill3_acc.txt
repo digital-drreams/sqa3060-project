@@ -1,0 +1,3 @@
+00001 Test Name            A 00000.00
+00002 Wrong Name           A 65536.03
+00000 END_OF_FILE          D 00000.00

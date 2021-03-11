@@ -1,0 +1,9 @@
+login
+standard
+Test Name
+deposit
+00001
+$10
+deposit
+5102
+logout

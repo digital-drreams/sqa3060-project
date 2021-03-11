@@ -1,0 +1,7 @@
+Welcome to the banking system.
+Enter session type:
+Session request successful.
+Enter account holder name:
+Enter account identification number:
+Your non-student payment plan has been changed to a student payment plan (SP).
+Session terminated.

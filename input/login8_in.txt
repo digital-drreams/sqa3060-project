@@ -1,0 +1,39 @@
+login
+admin
+create
+Test Name
+100.00
+create
+Test Name
+0.00
+logout
+login
+admin
+deposit
+Test Name
+00001
+5.00
+changeplan
+Test Name
+00001
+paybill
+Test Name
+00001
+EC
+10.00
+transfer
+Test Name
+00001
+00002
+10.00
+withdrawal
+Test Name
+00001
+10.00
+disable
+Test Name
+00001
+delete
+Test Name
+00002
+logout

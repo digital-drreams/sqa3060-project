@@ -1,0 +1,3 @@
+00002 Test Name2           A 00010.00 
+00001 Test Name            A 00010.00
+00000 END_OF_FILE          D 00000.00

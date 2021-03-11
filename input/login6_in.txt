@@ -1,0 +1,9 @@
+login
+standard
+Test Name
+login
+logout
+login
+admin
+login
+logout

@@ -1,0 +1,16 @@
+login
+standard
+Test Name
+paybill
+00001
+FI
+2500.00
+paybill
+00001
+FI
+1000.00
+paybill
+00001
+FI
+1500.00
+logout

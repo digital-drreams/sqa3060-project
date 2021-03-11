@@ -1,0 +1,8 @@
+login
+standard
+Test Name
+paybill
+00001
+CQ
+50.50
+logout

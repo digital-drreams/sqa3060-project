@@ -1,0 +1,14 @@
+login
+admin
+withdrawal
+Test Name
+00001
+510.00
+logout
+login
+standard
+Test Name
+withdrawal
+00001
+520.00
+logout

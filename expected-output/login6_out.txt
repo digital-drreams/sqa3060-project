@@ -1,0 +1,11 @@
+Welcome to the banking system.
+Enter session type:
+Enter user identification:
+Session request successful.
+Already logged in to a session.
+Session terminated
+Welcome to the banking system.
+Enter session type:
+Session request successful
+Already logged in to a session.
+Session terminated

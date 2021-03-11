@@ -1,0 +1,45 @@
+Welcome to the banking system.
+Enter session type:
+Session request successful.
+Enter account holder name:
+Enter initial balance:
+Account created successfully; account #00001.
+Restart session to access/modify.
+Enter account holder name:
+Enter initial balance:
+Account created successfully; account #00002.
+Restart session to access/modify.
+Session terminated.
+Welcome to the banking system.
+Enter session type:
+Session request successful.
+Enter account holder name:
+Enter account identification number:
+Enter amount to be deposited:
+Enter account holder name:
+Enter account identification number:
+Your non-student payment plan has been changed to a student payment plan (SP).
+Enter account holder name:
+Enter account identification number:
+Possible bill payees, [shorthands bracketed]:
+The Bright Light Electric Company [EC]
+Credit Card Company Q [CQ]
+Fast Internet, Inc. [FI]
+Enter bill holder to pay:
+Enter amount to pay:
+Bill payment successful.
+Enter account holder name:
+Enter host account number:
+Enter recipient account number:
+Enter amount to transfer:
+Transfer successful.
+Enter account holder name:
+Enter account identification number:
+Enter amount to be withdrawn:
+Enter account holder name:
+Enter account identification number:
+Account disabled successfully.
+Enter account holder name:
+Enter account identification number:
+Account deleted successfully.
+Session terminated.

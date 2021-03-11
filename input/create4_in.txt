@@ -1,0 +1,6 @@
+login
+admin
+create
+Test Name
+1000000.00
+logout
