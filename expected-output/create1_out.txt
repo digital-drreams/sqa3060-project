@@ -1,6 +1,6 @@
 Welcome to the banking system.
 Enter session type:
-Enter User Identification:
+Enter user Identification:
 Session request successful.
 Permission denied.
 Session terminated.
