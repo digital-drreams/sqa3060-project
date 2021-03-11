@@ -3,5 +3,5 @@ Enter session type:
 Session request successful.
 Enter account holder name: 
 Enter initial balance: 
-Account created successfully; account #00001.
+Account created successfully; account #00001
 Session terminated.
