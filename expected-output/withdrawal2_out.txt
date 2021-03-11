@@ -2,10 +2,8 @@ Welcome to the banking system.
 Enter session type:
 Enter user identification:
 Session request successful.
-Enter account holder name:
 Enter account identification number:
 Enter amount to be withdrawn:
-Enter account holder name:
 Enter account identification number:
 Invalid account identification number.
 Session terminated.
