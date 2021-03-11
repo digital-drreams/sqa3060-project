@@ -181,7 +181,7 @@ bool Session::transfer(){
 			cout << "Enter user identification: ";
 			getline(cin, username);
 			username = username.substr(0, username.find_last_not_of(char(13)) + 1);
-			cout << refactorUserInput(username, "Enter account number: ");
+			cout << refactorUserInput(username, "Enter host account number: ");
 		}
 		else {
         	cout << "Enter host account number: ";
@@ -209,9 +209,9 @@ bool Session::transfer(){
 					} else {
 						if (handler->changeBalance(sndrAccountNumber, username, -transferValue)){ // check for sender balance, go ahead with transfer if possible
 							handler->changeBalance(recpAccountNumber, username, transferValue); 
-							sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), sndrAccountNumber, transferValue);
+							sprintf(logLine, "02 %-20s %05i %08.2f   ", username.data(), sndrAccountNumber, transferValue);
 							transactionLog.push_back(string(logLine));
-							sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), recpAccountNumber, transferValue);
+							sprintf(logLine, "02 %-20s %05i %08.2f   ", username.data(), recpAccountNumber, transferValue);
 							transactionLog.push_back(string(logLine));
 							cout << refactorUserInput(to_string(transferValue), "Transfer successful.") << endl;
 							return true;
@@ -221,7 +221,7 @@ bool Session::transfer(){
 						}
 					}
 				} else {
-					cout << refactorUserInput(to_string(recpAccountNumber), "Account number invalid.") << endl;
+					cout << refactorUserInput(to_string(recpAccountNumber), "Invalid account identification number.") << endl;
 					return false;
 				}
 			} else {

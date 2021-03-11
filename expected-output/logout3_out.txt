@@ -10,4 +10,3 @@ Error: Transaction not accepted outside of active session.
 Error: Transaction not accepted outside of active session.
 Error: Transaction not accepted outside of active session.
 Error: Transaction not accepted outside of active session.
-Error: Transaction not accepted outside of active session.

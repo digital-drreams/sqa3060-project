@@ -3,8 +3,8 @@ Enter session type:
 Enter user identification: 
 Session request successful.
 Enter host account number: 
-Account number invalid.
+Invalid account identification number.
 Enter host account number: 
 Enter recipient account number: 
-Account number invalid.
+Invalid account identification number.
 Session terminated.

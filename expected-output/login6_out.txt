@@ -6,6 +6,6 @@ Session request failed.
 Session terminated.
 Welcome to the banking system.
 Enter session type: 
-Session request successful
+Session request successful.
 Session request failed.
 Session terminated.

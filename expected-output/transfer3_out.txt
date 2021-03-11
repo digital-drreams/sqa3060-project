@@ -10,6 +10,7 @@ Session terminated.
 Welcome to the banking system.
 Enter session type: 
 Session request successful.
+Enter user identification:
 Enter host account number: 
 Enter recipient account number: 
 Enter amount to transfer: 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Compares the expected and actual output folders.
-diff -rsc actual-output/ expected-output/
+diff -rscZ actual-output/ expected-output/
 
 ### optional cmp, best used if there's a stubborn difference (ie End of Line) that's not immediately obvious
 #cd expected-output #Navigates into the expected-output folder temporarily to grab test name prefixes

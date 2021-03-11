@@ -1,7 +1,7 @@
 Welcome to the banking system.
 Enter session type: 
 Session request successful.
-Enter account holder name: 
+Enter user identification: 
 Enter host account number: 
 Enter recipient account number: 
 Enter amount to transfer: 

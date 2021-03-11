@@ -1,1 +1,1 @@
-Error: Cannot logout outside of session.
+Error: Transaction not accepted outside of active session.
