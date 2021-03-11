@@ -1,5 +1,6 @@
 Welcome to the banking system.
 Enter session type: 
+Enter user identification: 
 Session request successful.
 Enter account identification number: 
 Possible bill payees, [shorthands bracketed]:
