@@ -1,1 +1,0 @@
-Error: Cannot logout outside of session.

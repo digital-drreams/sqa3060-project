@@ -1,9 +1,0 @@
-Welcome to the banking system.
-Enter session type: 
-Enter user identification: 
-Session request successful.
-Enter account identification number: 
-Enter amount to be deposited: 
-Enter account identification number: 
-Invalid account identification number.
-Session terminated.
