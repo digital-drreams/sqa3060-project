@@ -1,9 +1,0 @@
-Welcome to the banking system.
-Enter session type: 
-Session request successful.
-Enter account holder name: 
-Enter account identification number: 
-Account disabled successfully.
-Enter account holder name: 
-Enter account identification number: 
-Session terminated.

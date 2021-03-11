@@ -1,6 +1,0 @@
-Welcome to the banking system.
-Enter session type: 
-Session request successful.
-Enter account holder name: 
-Name must be shorter than 20 characters.
-Session terminated.
