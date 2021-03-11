@@ -278,12 +278,11 @@ bool Session::deposit(){
 			}
 		} else {
 			cout << refactorUserInput(to_string(accountNumber), "Invalid account identification number.") << endl;
-			return false;
 		}
     } else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
-		return false;
 	} 
+	return false;
 }
 
 bool Session::changeplan(){
@@ -498,8 +497,9 @@ bool Session::paybill() {
 			cout << "Enter account identification number: ";
 		}
 
-		int acc;
-		cin >> acc;
+		getline(cin, temp);
+		temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
+		int acc = stoi(temp);
 		
 		if (handler->verify(acc, username)) { //Verify the account is owned by the user
 			string target;
