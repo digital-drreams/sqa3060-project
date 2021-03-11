@@ -5,13 +5,12 @@ withdrawal
 00001
 10.00
 transfer
-Test Name
 00001
 00002
 10.00
 paybill
 00001
-The Bright Light Electric Company
+EC
 10.00
 deposit
 00001
