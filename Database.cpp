@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include "frontend.h"
+#include <regex>
 
 using namespace std;
 
@@ -216,6 +217,8 @@ bool Database::isDisabled(int id, string name) {
 
 bool Database::generateAccounts(string testType) {
 	// Variable Declaration
+	const regex float_regex("[-]?[$]*[0-9]+[.]?[0-9]*?");
+	const regex int_regex("[-]?*[0-9]+");
 	string line;
 	
 	// Opens and reads through the provided input file
@@ -227,15 +230,29 @@ bool Database::generateAccounts(string testType) {
 		while (getline(inputFile, line))
 		{
 			string name;
-			int accountNo;
-			float balance;
+			string accountNo;
+			string balance;
 
 			if (name != "END_OF_FILE") {
-				accountNo = stoi(line.substr(0, 5));
-				name = line.substr(6, line.find_first_of(' ', 6) - 1);
-				balance = stof(line.substr(29, 37));
+				accountNo = line.substr(0, 5);
+				name = line.substr(6, 21);
+				balance = line.substr(29, 37);
 
-				create(name, balance, accountNo);
+				// Strips extraneous whitespace from account holder names
+				if (name.find_first_of("  ", 6) <= line.length()) {
+					name.erase(name.find_first_of("  ", 6), 27);
+				}
+
+				// Creates a new account if and only if the data in the current account information matches the correct
+				// variable types
+				if (!regex_match(balance, float_regex) || !regex_match(accountNo, int_regex)) {
+					cout << "WARNING: Account information file corrupted. Please notify staff immediately." << endl;
+				}
+				else {
+					create(name, stof(balance), stoi(accountNo));
+				}
+
+
 			}
 		}
 		// Closes input file once read

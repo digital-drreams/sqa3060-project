@@ -10,6 +10,7 @@ using namespace std;
 
 string accountFileLocation = "accounts.txt";
 string transactFileLocation = "transact.txt";
+const regex float_regex("[-]?[$]*[0-9]+[.]?[0-9]*?");
 
 Session::Session() { };
 
@@ -256,15 +257,24 @@ bool Session::deposit(){
 		accountNumber = stoi(temp);
 
         if (handler->verify(accountNumber, username)){
-			cout << refactorUserInput(to_string(accountNumber), "Enter amount to be deposited: ");
+			cout << refactorUserInput(to_string(accountNumber), "Enter amount to be deposited: ") << endl;
 			getline(cin, temp);
 			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
-			depositValue = stof(temp);
+
+			if (!regex_match(temp, float_regex)) {
+				cout << refactorUserInput(temp, "Deposit format incorrect.") << endl;
+			}
+			else {
+				// Removes $ from balance string
+				temp.erase(remove(temp.begin(), temp.end(), '$'), temp.end());
+
+				depositValue = stof(temp);
             
-			handler->changeBalance(accountNumber, username, depositValue); // deposit requested value
-			sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), accountNumber, depositValue);
-			transactionLog.push_back(string(logLine));
-			return true;
+				handler->changeBalance(accountNumber, username, depositValue); // deposit requested value
+				sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), accountNumber, depositValue);
+				transactionLog.push_back(string(logLine));
+				return true;
+			}
 		} else {
 			cout << refactorUserInput(to_string(accountNumber), "Invalid account identification number.") << endl;
 			return false;
@@ -412,7 +422,6 @@ bool Session::disable(){
 
 bool Session::create(){
 	string temp; // used to aid input handling/casting
-	const regex float_regex("[-]?[$]*[0-9]+[.]?[0-9]*?");
 
 	if (isActive) { //Is there a user logged in?
 		if (isPrivileged) { //Are they an admin?
