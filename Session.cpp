@@ -132,7 +132,7 @@ bool Session::withdrawal(){
 			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
 			
 			if (!regex_match(temp, float_regex)) {
-				cout << refactorUserInput(temp, "Withdraw format incorrect.") << endl;
+				cout << refactorUserInput(temp, "Amount entered must be in standard base10 numeric format (decimal accepted).") << endl;
 			}
 			else {
 				withdrawValue = stof(temp);
@@ -176,8 +176,7 @@ bool Session::transfer(){
 	char* logLine = new char[41];
 	string temp; // used to aid input handling/casting
 
-
-	if (isPrivileged && isActive){ // check if user is logged in as admin
+	if (isActive){ // check if user is logged in as admin
 		if (isPrivileged) {
 			cout << "Enter user identification: ";
 			getline(cin, username);

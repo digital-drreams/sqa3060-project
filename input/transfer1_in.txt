@@ -1,13 +1,14 @@
 login
 admin
-Test Name
 transfer
+Test Name
 00001
 00002
 10.00
 logout
 login
 standard
+Test Name
 transfer
 00001
 00002
