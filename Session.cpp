@@ -12,7 +12,8 @@ string accountFileLocation = "accounts.txt";
 string transactFileLocation = "transact.txt";
 const regex float_regex("[-]?[$]*[0-9]+[.]?[0-9]*?");
 
-Session::Session() { };
+
+Session::Session() {};
 
 Session::Session(string inLocation, string outLocation) {
 	accountFileLocation = inLocation;
@@ -230,8 +231,8 @@ bool Session::transfer(){
 		
 	} else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
-		return false;
 	}
+	return false;
 }
 
 bool Session::deposit(){
@@ -326,11 +327,10 @@ bool Session::changeplan(){
 		}
 	} else if (!isPrivileged && isActive) {
 		cout << "Must have Admin privilege." << endl;
-		return false;
 	} else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
-		return false;
 	}
+	return false;
 }
 
 bool Session::discard(){
