@@ -1,3 +1,3 @@
 #!/bin/bash
 # Compares the expected and actual output folders.
-diff -rsc actual-output/ expected-output/
+diff -s actual-output/ expected-output/
