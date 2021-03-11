@@ -264,7 +264,7 @@ bool Session::deposit(){
 		accountNumber = stoi(temp);
 
         if (handler->verify(accountNumber, username)){
-			cout << refactorUserInput(to_string(accountNumber), "Enter amount to be deposited: ") << endl;
+			cout << refactorUserInput(to_string(accountNumber), "Enter amount to be deposited: ");
 			getline(cin, temp);
 			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
 
