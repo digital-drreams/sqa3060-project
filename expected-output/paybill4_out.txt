@@ -1,6 +1,7 @@
 Welcome to the banking system.
 Enter session type:
 Session request successful.
+Enter account holder name:
 Enter account identification number:
 Possible bill payees, [shorthands bracketed]:
 The Bright Light Electric Company [EC]
