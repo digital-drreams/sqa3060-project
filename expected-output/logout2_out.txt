@@ -1,8 +1,8 @@
 Welcome to the banking system.
-Enter session type:
+Enter session type: 
 Session request successful.
 Session terminated.
 Welcome to the banking system.
-Enter session type:
+Enter session type: 
 Session request successful.
 Session terminated.

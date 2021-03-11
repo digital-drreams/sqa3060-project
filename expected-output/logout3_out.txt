@@ -1,5 +1,5 @@
 Welcome to the banking system.
-Enter session type:
+Enter session type: 
 Session request successful.
 Session terminated.
 Error: Transaction not accepted outside of active session.

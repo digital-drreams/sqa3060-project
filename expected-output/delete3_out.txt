@@ -1,9 +1,9 @@
 Welcome to the banking system.
-Enter session type:
+Enter session type: 
 Session request successful.
-Enter account holder name:
-Enter account identification number:
+Enter account holder name: 
+Enter account identification number: 
 Account deleted successfully.
-Enter account holder name:
-Enter account identification number:
+Enter account holder name: 
+Enter account identification number: 
 Session terminated.

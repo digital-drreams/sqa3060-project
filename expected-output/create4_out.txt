@@ -1,7 +1,7 @@
 Welcome to the banking system.
-Enter session type:
+Enter session type: 
 Session request successful.
-Enter account holder name:
-Enter initial balance:
+Enter account holder name: 
+Enter initial balance: 
 Initial balance can be at most $99999.99.
 Session terminated.
