@@ -130,26 +130,35 @@ bool Session::withdrawal(){
 			cout << refactorUserInput(to_string(accountNumber), "Enter amount to be withdrawn: ");
             getline(cin, temp);
 			temp = temp.substr(0, temp.find_last_not_of(char(13)) + 1);
-			withdrawValue = stof(temp);
+			
+			if (!regex_match(temp, float_regex)) {
+				cout << refactorUserInput(temp, "Withdraw format incorrect.") << endl;
+			}
+			else {
+				withdrawValue = stof(temp);
 
-			if (typeid(withdrawValue).name() != floatType){
-				cout << refactorUserInput(to_string(withdrawValue), "Amount entered must be in standard base10 numeric format (decimal accepted).") << endl;
-				return false;
-			} else {
-				if (withdrawValue <= withdrawLimit) { // check if withdrawal amount is within standard limit
-					if (handler->changeBalance(accountNumber, username, -withdrawValue)){ // withdraw requested amount if possible
-						sprintf(logLine, "01 %-20s %05i %08.2f   ", username.data(), accountNumber, withdrawValue);
-						transactionLog.push_back(string(logLine));
-						withdrawLimit -= withdrawValue;
-						return true;
-					} else {
-						cout << refactorUserInput(to_string(withdrawValue), "Amount entered cannot exceed the account balance.") << endl;
+				if (typeid(withdrawValue).name() != floatType){
+					cout << refactorUserInput(to_string(withdrawValue), "Amount entered must be in standard base10 numeric format (decimal accepted).") << endl;
+					return false;
+				} else {
+					if (withdrawValue <= withdrawLimit) { // check if withdrawal amount is within standard limit
+						if (handler->changeBalance(accountNumber, username, -withdrawValue)){ // withdraw requested amount if possible
+							sprintf(logLine, "01 %-20s %05i %08.2f   ", username.data(), accountNumber, withdrawValue);
+							transactionLog.push_back(string(logLine));
+							withdrawLimit -= withdrawValue;
+							if (temp.substr((temp.length()-2), temp.length()) != "\n") {
+								cout << endl;
+							}
+							return true;
+						} else {
+							cout << refactorUserInput(to_string(withdrawValue), "Amount entered cannot exceed the account balance.") << endl;
+							return false;
+						}
+					}
+					else {
+						cout << refactorUserInput(to_string(withdrawValue), "Amount entered exceeds the limit.") << endl;
 						return false;
 					}
-				}
-				else {
-					cout << refactorUserInput(to_string(withdrawValue), "Amount entered exceeds the limit.") << endl;
-					return false;
 				}
 			}
 		} else {
@@ -274,6 +283,9 @@ bool Session::deposit(){
 				handler->changeBalance(accountNumber, username, depositValue); // deposit requested value
 				sprintf(logLine, "04 %-20s %05i %08.2f   ", username.data(), accountNumber, depositValue);
 				transactionLog.push_back(string(logLine));
+				if (temp.substr((temp.length()-2), temp.length()) != "\n") {
+					cout << endl;
+				}
 				return true;
 			}
 		} else {
