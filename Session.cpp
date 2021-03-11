@@ -98,7 +98,7 @@ bool Session::logout(){
 		logFile.close();
 		return true;
 	} else { // otherwise return error if user is not logged into a session
-		cout << "Error: Cannot logout outside of session." << endl;
+		cout << "Error: Transaction not accepted outside of active session." << endl;
 		return false;
 	}
 }
