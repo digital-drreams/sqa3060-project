@@ -152,20 +152,23 @@ bool Session::withdrawal(){
 							return true;
 						} else {
 							cout << refactorUserInput(to_string(withdrawValue), "Amount entered cannot exceed the account balance.") << endl;
+							return false;
 						}
 					}
 					else {
 						cout << refactorUserInput(to_string(withdrawValue), "Amount entered exceeds the limit.") << endl;
+						return false;
 					}
 				}
 			}
 		} else {
 			cout << refactorUserInput(to_string(accountNumber), "Invalid account identification number.") << endl;
+			return false;
 		}
     } else {
 		cout << "Error: Transaction not accepted outside of active session." << endl;
+		return false;
 	}
-	return false;
 }
 
 bool Session::transfer(){
