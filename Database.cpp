@@ -219,6 +219,7 @@ bool Database::generateAccounts(string testType) {
 	// Variable Declaration
 	const regex float_regex("[-]?[$]*[0-9]+[.]?[0-9]*?");
 	const regex int_regex("[-]?*[0-9]+");
+	const string END = "END_OF_FILE         ";
 	string line;
 	
 	// Opens and reads through the provided input file
@@ -233,7 +234,7 @@ bool Database::generateAccounts(string testType) {
 			string accountNo;
 			string balance;
 
-			if (strcmp(const_cast<char*>(name.c_str()), const_cast<char*>("END_OF_FILE         ".c_str())) != 0) {
+			if (strcmp(const_cast<char*>(name.c_str()), const_cast<char*>(END.c_str())) != 0) {
 				accountNo = line.substr(0, 5);
 				name = line.substr(6, 21);
 				balance = line.substr(29, 8);
