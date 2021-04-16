@@ -233,7 +233,7 @@ bool Database::generateAccounts(string testType) {
 			string accountNo;
 			string balance;
 
-			if (name != "END_OF_FILE") {
+			if (name != "END_OF_FILE         ") {
 				accountNo = line.substr(0, 5);
 				name = line.substr(6, 21);
 				balance = line.substr(29, 8);
